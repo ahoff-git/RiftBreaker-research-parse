@@ -1,11 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 
-const DEFAULT_GRAPH_CANDIDATES = [
-  'research_graph.json',
-  '../research_graph.json',
-  '/research_graph.json'
-]
+const DEFAULT_GRAPH_URL = '/research_graph.json'
 
 export default function Home() {
   const [graph, setGraph] = useState(null)
@@ -20,17 +16,14 @@ export default function Home() {
   }
 
   async function loadDefaultGraph() {
-    let lastErr = null
-    for (const url of DEFAULT_GRAPH_CANDIDATES) {
-      try {
-        const res = await fetch(url, { cache: 'no-store' })
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
-        const data = await res.json()
-        loadGraphObject(data)
-        return
-      } catch (e) { lastErr = e }
+    try {
+      const res = await fetch(DEFAULT_GRAPH_URL, { cache: 'no-store' })
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+      const data = await res.json()
+      loadGraphObject(data)
+    } catch (e) {
+      alert('Could not fetch research_graph.json.\n' + e)
     }
-    alert('Could not fetch research_graph.json from known locations.\nLast error: ' + lastErr)
   }
 
   useEffect(() => { loadDefaultGraph() }, [])

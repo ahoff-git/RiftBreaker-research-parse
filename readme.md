@@ -19,7 +19,7 @@ Normalize the research tree and build dependency/unlock relationships.
 
 Commands:
 - Generate graph (enriched with English labels if available):
-  - `npx ts-node analyze_research.ts research_tree.json gui_lookup.json > research_graph.json`
+  - `npx ts-node analyze_research.ts research_tree.json gui_lookup.json > public/research_graph.json`
 
 Output structure (research_graph.json):
 - `stats`: counts
@@ -38,7 +38,7 @@ Explore the research graph in a browser using a Next.js site.
 
 - Start the dev server: `npm run dev` then open `http://localhost:3000`
 - Build for production: `npm run build` and `npm start`
-- Place `research_graph.json` at the site root and it will load automatically on startup.
+- Place `research_graph.json` in the `public/` directory so it's served at the site root and will load automatically on startup.
 - Search by English name or key, filter by category, click a result to view:
   - Direct requirements
   - Total cost including all prerequisites

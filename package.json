@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "convert": "ts-node rt2json.ts ./research/research_tree.rt research_tree.json",
     "gui:lookup": "ts-node gui2lookup.ts ./gui research_tree.json gui_lookup.json",
-    "graph": "ts-node analyze_research.ts research_tree.json gui_lookup.json research_graph.json",
+    "graph": "ts-node analyze_research.ts research_tree.json gui_lookup.json public/research_graph.json",
     "all": "npm run convert && npm run gui:lookup && npm run graph",
     "dev": "next dev",
     "build": "next build",
