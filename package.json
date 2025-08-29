@@ -9,17 +9,16 @@
     "gui:lookup": "ts-node gui2lookup.ts ./gui research_tree.json gui_lookup.json",
     "graph": "ts-node analyze_research.ts research_tree.json gui_lookup.json research_graph.json",
     "all": "npm run convert && npm run gui:lookup && npm run graph",
-    "web:serve:npx": "npx serve .",
-    "web:serve:python": "python -m http.server",
-    "web:open:win": "start web\\index.html",
-    "web:open:mac": "open web/index.html",
-    "web:open:linux": "xdg-open web/index.html"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/react": "19.1.12",
     "peggy": "^5.0.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
@@ -32,6 +31,9 @@
     "create-require": "^1.1.1",
     "diff": "^4.0.2",
     "make-error": "^1.3.6",
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "semver": "^7.7.2",
     "source-map-generator": "^2.0.2",
     "undici-types": "^7.10.0",
