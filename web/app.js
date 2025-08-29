@@ -30,22 +30,35 @@
   }
 
   async function tryFetchDefault(){
-    try {
-      const res = await fetch('../research_graph.json');
-      if (!res.ok) throw new Error(res.statusText);
-      const data = await res.json();
-      loadGraphObject(data);
-    } catch (e) {
-      alert('Fetch ../research_graph.json failed. Use file picker.\n' + e);
+    const candidates = [
+      'research_graph.json',           // same folder (if served from /web)
+      '../research_graph.json',        // project root (if served from /web)
+      '/research_graph.json'           // absolute at site root
+    ];
+    let lastErr = null;
+    for (const url of candidates){
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        const data = await res.json();
+        loadGraphObject(data);
+        return;
+      } catch (e) { lastErr = e; }
     }
+    alert('Could not fetch research_graph.json from known locations. Use the file picker.\nLast error: ' + lastErr);
   }
 
   function buildCategoryOptions(){
-    const cats = new Set();
-    for (const n of nodesArr){ if (n.category) cats.add(n.category); }
-    const sorted = Array.from(cats).sort();
+    const cats = new Map(); // key -> display
+    for (const n of nodesArr){
+      if (n.category){
+        const disp = n.categoryName || n.category;
+        if (!cats.has(n.category)) cats.set(n.category, disp);
+      }
+    }
+    const sorted = Array.from(cats.entries()).sort((a,b)=>String(a[1]).localeCompare(String(b[1])));
     catSel.innerHTML = '<option value="">All categories</option>' +
-      sorted.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      sorted.map(([val, disp]) => `<option value="${escapeHtml(val)}">${escapeHtml(disp)}</option>`).join('');
   }
 
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c])); }
@@ -73,7 +86,6 @@
     resultsEl.innerHTML = items.map(n => `
       <li data-key="${escapeHtml(n.key)}" class="${n.key===activeKey?'active':''}">
         <div>${escapeHtml(normalizeName(n))}</div>
-        <div class="muted">${escapeHtml(n.key)}</div>
       </li>
     `).join('');
   }
@@ -104,8 +116,7 @@
     detailsEl.innerHTML = `
       <div class="kv">
         <div class="k">Name</div><div><strong>${escapeHtml(name)}</strong></div>
-        <div class="k">Key</div><div class="muted">${escapeHtml(key)}</div>
-        <div class="k">Category</div><div>${escapeHtml(node.category||'')}</div>
+        <div class="k">Category</div><div>${escapeHtml(node.categoryName || node.category || '')}</div>
         ${node.icon?`<div class="k">Icon</div><div class="muted">${escapeHtml(node.icon)}</div>`:''}
         ${node.pos?`<div class="k">Position</div><div class="muted">x:${escapeHtml(String(node.pos.x??''))} y:${escapeHtml(String(node.pos.y??''))}</div>`:''}
       </div>
@@ -151,6 +162,16 @@
         if (li) li.scrollIntoView({ block: 'center' });
       });
     });
+  }
+
+  function costPill(resource, amount){
+    const amt = (typeof amount === 'number') ? amount : parseFloat(amount);
+    const display = Number.isFinite(amt) ? formatNumber(amt) : String(amount);
+    return `<span class="cost"><strong>${escapeHtml(resource)}</strong>: ${escapeHtml(display)}</span>`;
+  }
+
+  function formatNumber(n){
+    try { return new Intl.NumberFormat().format(n); } catch { return String(n); }
   }
 
   function linkNode(key){
@@ -204,4 +225,3 @@
   });
   tryFetchBtn.addEventListener('click', tryFetchDefault);
 })();
-

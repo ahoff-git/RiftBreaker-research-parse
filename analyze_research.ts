@@ -14,6 +14,7 @@ type NodeRecord = {
   key: string;                  // research_name (gui key)
   name?: string;                // English label (from gui_lookup)
   category?: string;            // tree category (gui key)
+  categoryName?: string;        // English category (from gui_lookup)
   icon?: string;
   pos?: { x?: number; y?: number };
   costs?: Cost[];
@@ -109,7 +110,10 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
   const byKey: Record<string, NodeRecord> = {};
   for (const n of nodes) {
     byKey[n.key] = { ...n };
-    if (lookup && lookup[n.key]) byKey[n.key].name = lookup[n.key];
+    if (lookup) {
+      if (lookup[n.key]) byKey[n.key].name = lookup[n.key];
+      if (n.category && lookup[n.category]) byKey[n.key].categoryName = lookup[n.category];
+    }
   }
   for (const n of nodes) {
     for (const req of n.requires) {
@@ -152,4 +156,3 @@ function main() {
 }
 
 main();
-
