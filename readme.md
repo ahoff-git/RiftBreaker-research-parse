@@ -32,21 +32,19 @@ Output structure (research_graph.json):
   - `awards`: unlocked blueprint ids
   - `icon`, `pos`: optional metadata
 
-## Static Web App
+## Web App (Next.js)
 
-Explore the research graph in a browser.
+Explore the research graph in a browser using a Next.js site.
 
-- Files: `web/index.html`, `web/app.js`, `web/styles.css`.
-- Load `research_graph.json` via the file picker, or click "Try fetch" if serving from the repo root.
+- Start the dev server: `npm run dev` then open `http://localhost:3000`
+- Build for production: `npm run build` and `npm start`
+- Load `research_graph.json` via the file picker, or click "Try fetch" if the file is at the site root.
 - Search by English name or key, filter by category, click a result to view:
   - Direct requirements
   - Total cost including all prerequisites
   - Ordered unlock steps (topological order)
   - Awards and direct unlocks
 
-Serving locally:
-- Use any static server, e.g. `npx serve .` or `python -m http.server` then open `/web/`.
-- Or open `web/index.html` directly and use the file picker.
 
 Build an English lookup map from `gui/0_ui_*.csv` files and (optionally) filter to only the keys referenced in `research_tree.json`.
 
