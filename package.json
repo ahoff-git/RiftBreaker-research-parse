@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "convert": "ts-node rt2json.ts ./research/research_tree.rt research_tree.json"
+    "convert": "ts-node rt2json.ts ./research/research_tree.rt research_tree.json",
+    "gui:lookup": "ts-node gui2lookup.ts ./gui research_tree.json gui_lookup.json"
   },
   "keywords": [],
   "author": "",

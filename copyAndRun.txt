@@ -1,3 +1,0 @@
-npm init -y
-npm i -D ts-node peggy
-$ npx ts-node rt2json.ts ./research/research_tree.rt > research_tree.json
