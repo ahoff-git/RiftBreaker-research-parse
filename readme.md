@@ -38,7 +38,7 @@ Explore the research graph in a browser using a Next.js site.
 
 - Start the dev server: `npm run dev` then open `http://localhost:3000`
 - Build for production: `npm run build` and `npm start`
-- Load `research_graph.json` via the file picker, or click "Try fetch" if the file is at the site root.
+- Place `research_graph.json` at the site root and it will load automatically on startup.
 - Search by English name or key, filter by category, click a result to view:
   - Direct requirements
   - Total cost including all prerequisites
