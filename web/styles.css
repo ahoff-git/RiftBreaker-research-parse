@@ -1,0 +1,67 @@
+:root {
+  --bg: #0f1115;
+  --panel: #161a22;
+  --fg: #e6eaf2;
+  --muted: #a7b1c2;
+  --accent: #5eb1ff;
+  --border: #262c36;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
+header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+header h1 { margin: 0 0 8px; font-size: 18px; }
+header .files { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+header .controls { display: flex; gap: 12px; align-items: center; }
+
+input[type="search"], select, button, input[type="file"] {
+  background: #0d1117;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+button { cursor: pointer; }
+
+main { display: grid; grid-template-columns: 320px 1fr; height: calc(100% - 130px); }
+aside {
+  border-right: 1px solid var(--border);
+  overflow: auto;
+}
+#results { list-style: none; margin: 0; padding: 0; }
+#results li {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+#results li:hover { background: #161a22; }
+#results li.active { background: #1a2130; border-left: 3px solid var(--accent); }
+#results .muted { color: var(--muted); }
+
+#details { padding: 16px; overflow: auto; }
+.placeholder { color: var(--muted); }
+
+.kv { display: grid; grid-template-columns: 160px 1fr; gap: 6px 12px; margin-bottom: 12px; }
+.kv .k { color: var(--muted); }
+.pill { display: inline-block; padding: 2px 6px; border: 1px solid var(--border); border-radius: 999px; margin: 0 6px 6px 0; background: #0d1117; }
+.group { margin: 18px 0; }
+.group h3 { margin: 0 0 8px; font-size: 14px; color: var(--muted); font-weight: 600; }
+.costs { display: flex; flex-wrap: wrap; gap: 8px; }
+.cost { padding: 4px 8px; border: 1px solid var(--border); border-radius: 8px; background: #0d1117; }
+.list { display: flex; flex-wrap: wrap; gap: 8px; }
+.list .item { padding: 4px 8px; border: 1px solid var(--border); border-radius: 8px; background: #0d1117; cursor: pointer; }
+.list .item:hover { background: #161a22; }
+
+footer { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--muted); }
+

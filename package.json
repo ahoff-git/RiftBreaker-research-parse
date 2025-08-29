@@ -6,7 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "convert": "ts-node rt2json.ts ./research/research_tree.rt research_tree.json",
-    "gui:lookup": "ts-node gui2lookup.ts ./gui research_tree.json gui_lookup.json"
+    "gui:lookup": "ts-node gui2lookup.ts ./gui research_tree.json gui_lookup.json",
+    "graph": "ts-node analyze_research.ts research_tree.json gui_lookup.json research_graph.json",
+    "all": "npm run convert && npm run gui:lookup && npm run graph",
+    "web:serve:npx": "npx serve .",
+    "web:serve:python": "python -m http.server",
+    "web:open:win": "start web\\index.html",
+    "web:open:mac": "open web/index.html",
+    "web:open:linux": "xdg-open web/index.html"
   },
   "keywords": [],
   "author": "",
