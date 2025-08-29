@@ -1,5 +1,11 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
+
+const DEFAULT_GRAPH_CANDIDATES = [
+  'research_graph.json',
+  '../research_graph.json',
+  '/research_graph.json'
+]
 
 export default function Home() {
   const [graph, setGraph] = useState(null)
@@ -13,25 +19,9 @@ export default function Home() {
     setNodes(Object.entries(obj.nodes || {}).map(([k, v]) => ({ key: k, ...v })))
   }
 
-  function handleFileChange(e) {
-    const file = e.target.files && e.target.files[0]
-    if (!file) return
-    const fr = new FileReader()
-    fr.onload = () => {
-      try { loadGraphObject(JSON.parse(fr.result)) }
-      catch (err) { alert('Invalid JSON: ' + err) }
-    }
-    fr.readAsText(file)
-  }
-
-  async function tryFetchDefault() {
-    const candidates = [
-      'research_graph.json',
-      '../research_graph.json',
-      '/research_graph.json'
-    ]
+  async function loadDefaultGraph() {
     let lastErr = null
-    for (const url of candidates) {
+    for (const url of DEFAULT_GRAPH_CANDIDATES) {
       try {
         const res = await fetch(url, { cache: 'no-store' })
         if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
@@ -40,8 +30,10 @@ export default function Home() {
         return
       } catch (e) { lastErr = e }
     }
-    alert('Could not fetch research_graph.json from known locations. Use the file picker.\nLast error: ' + lastErr)
+    alert('Could not fetch research_graph.json from known locations.\nLast error: ' + lastErr)
   }
+
+  useEffect(() => { loadDefaultGraph() }, [])
 
   const categories = useMemo(() => {
     const cats = new Map()
@@ -134,13 +126,6 @@ export default function Home() {
     <>
       <header>
         <h1>RiftBreaker Research Explorer</h1>
-        <div className="files">
-          <label>
-            Load research_graph.json
-            <input type="file" accept="application/json" onChange={handleFileChange} />
-          </label>
-          <button onClick={tryFetchDefault}>Try fetch ./research_graph.json</button>
-        </div>
         <div className="controls">
           <input type="search" placeholder="Search by name or key..." value={search} onChange={e => setSearch(e.target.value)} />
           <select value={category} onChange={e => setCategory(e.target.value)}>

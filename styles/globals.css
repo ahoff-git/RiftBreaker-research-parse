@@ -22,10 +22,9 @@ header {
   background: var(--panel);
 }
 header h1 { margin: 0 0 8px; font-size: 18px; }
-header .files { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
 header .controls { display: flex; gap: 12px; align-items: center; }
 
-input[type="search"], select, button, input[type="file"] {
+input[type="search"], select, button {
   background: #0d1117;
   color: var(--fg);
   border: 1px solid var(--border);
