@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from 'react'
 import { useGraph } from '../lib/useGraph.mjs'
 import { graphBounds, computeScale, graphBoundsForCategory, topoOrderForTarget } from '../lib/graphUtils.mjs'
+import { useCategories } from '../lib/useCategories.mjs'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
@@ -42,17 +43,7 @@ export default function Tree() {
   const { width: canvasWidth, height: canvasHeight } = useCanvasSize()
 
   // Category options and selection
-  const categories = useMemo(() => {
-    if (!graph || !graph.nodes) return []
-    const set = new Map()
-    for (const n of Object.values(graph.nodes)) {
-      if (n && n.category) {
-        const disp = n.categoryName || n.category
-        if (!set.has(n.category)) set.set(n.category, disp)
-      }
-    }
-    return Array.from(set.entries()).sort((a, b) => String(a[1]).localeCompare(String(b[1])))
-  }, [graph])
+  const categories = useCategories(graph)
 
   const [category, setCategory] = useState('')
   const [highlightKey, setHighlightKey] = useState('')
