@@ -42,8 +42,8 @@ export default function TechTreeCanvas({ graph, width = 800, height = 600, scale
     // Map 1 canvas unit to 1 CSS pixel (but with higher backing resolution)
     ctx.scale(dpr, dpr)
 
-    drawGraph(ctx, graph, { scale, bounds, labelPx, zoom, panX: pan.x, panY: pan.y, showLabels, showEdges, filterCategory, highlightKey, requireSet })
-  }, [graph, scale, bounds, width, height, labelPx, zoom, pan.x, pan.y, showLabels, showEdges, filterCategory, highlightKey, requireSet])
+    drawGraph(ctx, graph, { scale, bounds, labelPx, zoom, panX: pan.x, panY: pan.y, showLabels, showEdges, filterCategory, highlightKey, requireSet, edgeMinScale })
+  }, [graph, scale, bounds, width, height, labelPx, zoom, pan.x, pan.y, showLabels, showEdges, filterCategory, highlightKey, requireSet, edgeMinScale])
 
   return (
     <canvas
