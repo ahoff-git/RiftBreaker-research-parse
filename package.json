@@ -4,7 +4,8 @@
   "description": "The Riftbreaker research tree converter + viewer (RT -> JSON, GUI lookup, normalized graph)",
   "main": "index.js",
   "scripts": {
-    "test": "tsc --noEmit",
+    "tsc": "node ./node_modules/typescript/bin/tsc",
+    "test": "npm run tsc -- --noEmit",
     "tsnode": "tsx",
     "convert": "npm run tsnode -- rt2json.ts ./research/research_tree.rt research_tree.json",
     "gui:lookup": "npm run tsnode -- gui2lookup.ts ./gui research_tree.json gui_lookup.json",
@@ -12,7 +13,7 @@
     "all": "npm run convert && npm run gui:lookup && npm run graph",
     "data": "npm run all",
     "dev": "next dev",
-    "build": "tsc --noEmit && next build",
+    "build": "npm run tsc -- --noEmit && next build",
     "start": "next start"
   },
   "keywords": [],

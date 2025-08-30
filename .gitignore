@@ -2,3 +2,4 @@
 /gui
 /node_modules
 /.next
+tsconfig.tsbuildinfo
