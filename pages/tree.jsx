@@ -2,7 +2,9 @@ import { useMemo, useState, useEffect } from 'react'
 import { useGraph } from '../lib/useGraph.mjs'
 import { graphBounds, computeScale, graphBoundsForCategory } from '../lib/graphUtils.mjs'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
+import MiniMap from '../components/MiniMap.jsx'
 
 const MAIN_WIDTH = 800
 const MAIN_HEIGHT = 600
@@ -55,9 +57,8 @@ export default function Tree() {
 
   const mainScale = useMemo(() => computeScale(MAIN_WIDTH, MAIN_HEIGHT, bounds), [bounds])
 
-  const miniScale = useMemo(() => computeScale(MINI_WIDTH, MINI_HEIGHT, bounds), [bounds])
-
   function onNodeClick(key) {
+    setHighlightKey(key)
     // Navigate to index page with the selected node
     router.push({ pathname: '/', query: { key } })
   }
@@ -76,6 +77,7 @@ export default function Tree() {
             {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
           </select>
         </label>
+        <Link href="/" className="button">Main Page</Link>
       </div>
       <TechTreeCanvas
         graph={graph}
@@ -92,19 +94,12 @@ export default function Tree() {
         onNodeClick={onNodeClick}
         className="techtree-main"
       />
-      <TechTreeCanvas
+      <MiniMap
         graph={graph}
-        bounds={bounds}
+        category={category}
+        highlightKey={highlightKey}
         width={MINI_WIDTH}
         height={MINI_HEIGHT}
-        scale={miniScale}
-        labelPx={8}
-        showLabels={false}
-        showEdges={true}
-        interactive={false}
-        filterCategory={category}
-        highlightKey={highlightKey}
-        className="techtree-mini"
       />
     </div>
   )
