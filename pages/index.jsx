@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 
 const DEFAULT_GRAPH_URL = '/research_graph.json'
+const SHOW_TIP = false
 
 export default function Home() {
   const [graph, setGraph] = useState(null)
@@ -142,11 +143,13 @@ export default function Home() {
           {detailsContent}
         </section>
       </main>
-      <footer>
-        <small>
-          Tip: Use analyze_research.ts to generate research_graph.json, and gui2lookup.ts to fill readable names.
-        </small>
-      </footer>
+      {SHOW_TIP && (
+        <footer>
+          <small>
+            Tip: Use analyze_research.ts to generate research_graph.json, and gui2lookup.ts to fill readable names.
+          </small>
+        </footer>
+      )}
     </>
   )
 }
