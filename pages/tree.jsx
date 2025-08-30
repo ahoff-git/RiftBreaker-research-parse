@@ -7,6 +7,7 @@ import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
+import GraphStatus from '../components/GraphStatus.jsx'
 
 const WIDTH_MARGIN = 32
 const HEIGHT_MARGIN = 200
@@ -76,33 +77,32 @@ export default function Tree() {
     ? { pathname: '/', query: { key: highlightKey } }
     : '/'
 
-  let content
-  if (loading) {
-    content = <div className="techtree-container"><div className="placeholder">Loading graph…</div></div>
-  } else if (error) {
-    content = <div className="techtree-container"><div className="placeholder">Could not load graph.</div></div>
-  } else {
-    content = (
-      <div className="techtree-container">
-        <TechTreeCanvas
-          graph={graph}
-          bounds={bounds}
-          width={canvasWidth}
-          height={canvasHeight}
-          scale={mainScale}
-          labelPx={12}
-          showLabels={true}
-          showEdges={true}
-          interactive={true}
-          filterCategory={category}
-          highlightKey={highlightKey}
-          requireSet={reqSet}
-          onNodeClick={onNodeClick}
-          className="techtree-main"
-        />
-      </div>
-    )
-  }
+  const canvas = (
+    <div className="techtree-container">
+      <TechTreeCanvas
+        graph={graph}
+        bounds={bounds}
+        width={canvasWidth}
+        height={canvasHeight}
+        scale={mainScale}
+        labelPx={12}
+        showLabels={true}
+        showEdges={true}
+        interactive={true}
+        filterCategory={category}
+        highlightKey={highlightKey}
+        requireSet={reqSet}
+        onNodeClick={onNodeClick}
+        className="techtree-main"
+      />
+    </div>
+  )
+
+  const content = (
+    <GraphStatus loading={loading} error={error}>
+      {canvas}
+    </GraphStatus>
+  )
 
   return (
     <>

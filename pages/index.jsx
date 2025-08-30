@@ -8,6 +8,7 @@ import MiniMap from '../components/MiniMap.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 import NodeLink from '../components/NodeLink.jsx'
+import GraphStatus from '../components/GraphStatus.jsx'
 
 const SHOW_TIP = false
 
@@ -133,10 +134,6 @@ export default function Home() {
         )}
       </>
     )
-  } else if (loading) {
-    detailsContent = <div className="placeholder">Loading graph…</div>
-  } else if (error) {
-    detailsContent = <div className="placeholder">Could not load graph.</div>
   } else {
     detailsContent = <div className="placeholder">Load a graph, then search and select a node.</div>
   }
@@ -170,7 +167,9 @@ export default function Home() {
           </ul>
         </aside>
         <section id="details" onClick={collapseList}>
-          {detailsContent}
+          <GraphStatus loading={loading} error={error}>
+            {detailsContent}
+          </GraphStatus>
         </section>
       </main>
       <Footer tip={SHOW_TIP ? 'Tip: Use analyze_research.ts to generate research_graph.json, and gui2lookup.ts to fill readable names.' : null} />
