@@ -583,7 +583,7 @@
         {
           "id": "resources/ammo_tower_low_caliber",
           "key": "resource_name/ammo_tower_low_caliber",
-          "name": "Low caliber",
+          "name": "Low caliber <img=gui/hud/building_info_tower>",
           "type": "resource",
           "visible": true
         }
@@ -4135,7 +4135,7 @@
         {
           "id": "resources/ammo_tower_liquid",
           "key": "resource_name/ammo_tower_liquid",
-          "name": "Liquid",
+          "name": "Liquid <img=gui/hud/building_info_tower>",
           "type": "resource",
           "visible": true
         }
@@ -4753,7 +4753,7 @@
         {
           "id": "resources/ammo_tower_explosive",
           "key": "resource_name/ammo_tower_explosive",
-          "name": "Explosive",
+          "name": "Explosive <img=gui/hud/building_info_tower>",
           "type": "resource",
           "visible": true
         }
@@ -6994,7 +6994,7 @@
         {
           "id": "resources/ammo_tower_high_caliber",
           "key": "resource_name/ammo_tower_high_caliber",
-          "name": "High caliber",
+          "name": "High caliber <img=gui/hud/building_info_tower>",
           "type": "resource",
           "visible": true
         }
@@ -7150,7 +7150,7 @@
         {
           "id": "resources/ammo_mech_liquid",
           "key": "resource_name/ammo_mech_liquid",
-          "name": "Liquid",
+          "name": "Liquid <img=gui/hud/building_info_mech>",
           "type": "resource",
           "visible": true
         }
@@ -10855,7 +10855,7 @@
         {
           "id": "resources/ammo_mech_explosive",
           "key": "resource_name/ammo_mech_explosive",
-          "name": "Explosive",
+          "name": "Explosive <img=gui/hud/building_info_mech>",
           "type": "resource",
           "visible": true
         }
@@ -11036,14 +11036,14 @@
         {
           "id": "resources/ammo_mech_high_caliber",
           "key": "resource_name/ammo_mech_high_caliber",
-          "name": "High caliber",
+          "name": "High caliber <img=gui/hud/building_info_mech>",
           "type": "resource",
           "visible": true
         },
         {
           "id": "resources/ammo_mech_low_caliber",
           "key": "resource_name/ammo_mech_low_caliber",
-          "name": "Low caliber",
+          "name": "Low caliber <img=gui/hud/building_info_mech>",
           "type": "resource",
           "visible": true
         }
@@ -23334,7 +23334,7 @@
         {
           "id": "resources/ammo_tower_liquid",
           "key": "resource_name/ammo_tower_liquid",
-          "name": "Liquid",
+          "name": "Liquid <img=gui/hud/building_info_tower>",
           "type": "resource",
           "visible": true
         }
@@ -23498,7 +23498,7 @@
         {
           "id": "resources/ammo_tower_high_caliber",
           "key": "resource_name/ammo_tower_high_caliber",
-          "name": "High caliber",
+          "name": "High caliber <img=gui/hud/building_info_tower>",
           "type": "resource",
           "visible": true
         }
@@ -25095,7 +25095,7 @@
     },
     "resource_name/ammo_tower_low_caliber": {
       "key": "resource_name/ammo_tower_low_caliber",
-      "name": "Low caliber",
+      "name": "Low caliber <img=gui/hud/building_info_tower>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/towers_minigun_lvl1"
@@ -26170,7 +26170,7 @@
     },
     "resource_name/ammo_tower_liquid": {
       "key": "resource_name/ammo_tower_liquid",
-      "name": "Liquid",
+      "name": "Liquid <img=gui/hud/building_info_tower>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/towers_flamer_lvl1",
@@ -26197,7 +26197,7 @@
     },
     "resource_name/ammo_tower_explosive": {
       "key": "resource_name/ammo_tower_explosive",
-      "name": "Explosive",
+      "name": "Explosive <img=gui/hud/building_info_tower>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/towers_artillery_lvl1"
@@ -26641,7 +26641,7 @@
     },
     "resource_name/ammo_tower_high_caliber": {
       "key": "resource_name/ammo_tower_high_caliber",
-      "name": "High caliber",
+      "name": "High caliber <img=gui/hud/building_info_tower>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/tower_shotgun_lvl1",
@@ -26673,7 +26673,7 @@
     },
     "resource_name/ammo_mech_liquid": {
       "key": "resource_name/ammo_mech_liquid",
-      "name": "Liquid",
+      "name": "Liquid <img=gui/hud/building_info_mech>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_weapons_liquid_standard"
@@ -27455,7 +27455,7 @@
     },
     "resource_name/ammo_mech_explosive": {
       "key": "resource_name/ammo_mech_explosive",
-      "name": "Explosive",
+      "name": "Explosive <img=gui/hud/building_info_mech>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_weapons_explosive_standard"
@@ -27487,7 +27487,7 @@
     },
     "resource_name/ammo_mech_high_caliber": {
       "key": "resource_name/ammo_mech_high_caliber",
-      "name": "High caliber",
+      "name": "High caliber <img=gui/hud/building_info_mech>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_basic_weapons"
@@ -27499,7 +27499,7 @@
     },
     "resource_name/ammo_mech_low_caliber": {
       "key": "resource_name/ammo_mech_low_caliber",
-      "name": "Low caliber",
+      "name": "Low caliber <img=gui/hud/building_info_mech>",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_basic_weapons"

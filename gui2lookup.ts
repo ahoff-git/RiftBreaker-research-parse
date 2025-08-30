@@ -58,12 +58,17 @@ function parseSemicolonCSV(line: string): string[] {
 
 function sanitizeEnglish(text: string): string {
   // Replace Unicode punctuation that commonly trips linters/IDEs
-  return text
+  const cleaned = text
     .replace(/[\u2013\u2014]/g, "-")   // en/em dash → hyphen
     .replace(/[\u2018\u2019]/g, "'")   // curly single quotes → '
     .replace(/[\u201C\u201D]/g, '"')   // curly double quotes → "
     .replace(/\u00A0/g, " ")           // non-breaking space → space
-    .replace(/\u2026/g, "...");        // ellipsis → ...
+    .replace(/\u2026/g, "...")         // ellipsis → ...
+    // Strip inline UI image tags like: <img=gui/hud/building_info_tower>
+    .replace(/\s*<img=[^>]+>\s*/gi, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  return cleaned;
 }
 
 function buildEnglishLookup(guiDir: string): Lookup {

@@ -1,5 +1,13 @@
 import { stripLevelSuffix, stripItemTierSuffix, weaponSynonym } from "./blueprintUtils";
 
+function stripMarkup(text: string | undefined): string | undefined {
+  if (!text) return text;
+  return text
+    .replace(/\s*<img=[^>]+>\s*/gi, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 export type Lookup = Record<string, string>;
 
 export type Cost = { resource: string; count: number; resourceName?: string };
@@ -59,20 +67,20 @@ export function attachLookupData(
   lookup: Lookup
 ): void {
   for (const n of Object.values(map)) {
-    if (lookup[n.key]) n.name = lookup[n.key];
-    if (n.category && lookup[n.category]) n.categoryName = lookup[n.category];
+    if (lookup[n.key]) n.name = stripMarkup(lookup[n.key]);
+    if (n.category && lookup[n.category]) n.categoryName = stripMarkup(lookup[n.category]);
     if (typeof n.key === "string" && n.key.includes("/name/")) {
       const descKey = n.key.replace("/name/", "/description/");
       const desc = lookup[descKey];
-      if (desc) n.description = desc;
+      if (desc) n.description = stripMarkup(desc);
     }
     if (n.requirementTooltipKey && lookup[n.requirementTooltipKey]) {
-      n.requirementTooltip = lookup[n.requirementTooltipKey];
+      n.requirementTooltip = stripMarkup(lookup[n.requirementTooltipKey]);
     }
     if (Array.isArray(n.costs)) {
       for (const c of n.costs) {
         const rk = `resource_name/${c.resource}`;
-        if (lookup[rk]) c.resourceName = lookup[rk];
+        if (lookup[rk]) c.resourceName = stripMarkup(lookup[rk]);
       }
     }
   }
@@ -91,11 +99,11 @@ export function resolveAwards(
       if (key) {
         ra.key = key;
         const name = lookup[key];
-        if (name) ra.name = name;
+        if (name) ra.name = stripMarkup(name);
         const descKey = blueprintToUiDescKey(id, lookup);
         if (descKey) {
           const d = lookup[descKey];
-          if (d) ra.desc = d;
+          if (d) ra.desc = stripMarkup(d);
         }
         ra.type = classifyBlueprint(id);
       }
