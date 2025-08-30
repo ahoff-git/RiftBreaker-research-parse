@@ -5,6 +5,7 @@
   --muted: #a7b1c2;
   --accent: #5eb1ff;
   --border: #262c36;
+  --link: var(--accent);
 }
 
 * { box-sizing: border-box; }
@@ -14,6 +15,11 @@ body {
   background: var(--bg);
   color: var(--fg);
   font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
+a,
+a:visited {
+  color: var(--link);
 }
 
 header {
