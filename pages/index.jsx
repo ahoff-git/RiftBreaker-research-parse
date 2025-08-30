@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useState, useMemo, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useUrlState } from '../lib/useUrlState.mjs'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 import { useGraph } from '../lib/useGraph.mjs'
 import { useCategories } from '../lib/categories.mjs'
@@ -12,9 +12,8 @@ import NodeLink from '../components/NodeLink.jsx'
 const SHOW_TIP = false
 
 export default function Home() {
-  const router = useRouter()
   const { graph, nodes, loading, error } = useGraph()
-  const [activeKey, setActiveKey] = useState(null)
+  const [activeKey, setActiveKey] = useUrlState(['key', 'node'], { method: 'push' })
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
   const [listOpen, setListOpen] = useState(true)
@@ -39,13 +38,6 @@ export default function Home() {
     return items
   }, [nodes, category, search])
 
-  // Sync active key with URL (?key=... or ?node=...)
-  useEffect(() => {
-    const q = router.query || {}
-    const k = (typeof q.key === 'string' ? q.key : (typeof q.node === 'string' ? q.node : null))
-    if (k) setActiveKey(k)
-  }, [router.query])
-
   // Expand list when no node is selected
   useEffect(() => {
     setListOpen(!activeKey)
@@ -55,11 +47,6 @@ export default function Home() {
   const treeHref = activeKey
     ? { pathname: '/tree', query: { node: activeKey } }
     : '/tree'
-
-  function setActiveAndUpdateUrl(key) {
-    setActiveKey(key)
-    router.push({ pathname: router.pathname, query: { ...router.query, key } }, undefined, { shallow: true })
-  }
 
   let detailsContent
   if (detailNode) {
@@ -176,7 +163,7 @@ export default function Home() {
         <aside>
           <ul id="results">
             {filtered.map(n => (
-              <li key={n.key} className={n.key === activeKey ? 'active' : ''} onClick={() => setActiveAndUpdateUrl(n.key)}>
+              <li key={n.key} className={n.key === activeKey ? 'active' : ''} onClick={() => setActiveKey(n.key)}>
                 <div>{normalizeName(n)}</div>
               </li>
             ))}

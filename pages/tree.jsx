@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from 'react'
 import { useGraph } from '../lib/useGraph.mjs'
 import { graphBounds, computeScale, graphBoundsForCategory, topoOrderForTarget } from '../lib/graphUtils.mjs'
 import { useCategories } from '../lib/categories.mjs'
-import { useRouter } from 'next/router'
+import { useUrlState } from '../lib/useUrlState.mjs'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
 import Footer from '../components/Footer.jsx'
@@ -38,24 +38,14 @@ function useCanvasSize({
 }
 
 export default function Tree() {
-  const router = useRouter()
   const { graph, loading, error } = useGraph()
   const { width: canvasWidth, height: canvasHeight } = useCanvasSize()
 
   // Category options and selection
   const categories = useCategories(graph)
 
-  const [category, setCategory] = useState('')
-  const [highlightKey, setHighlightKey] = useState('')
-
-  // Sync from URL: ?category=...&node=...
-  useEffect(() => {
-    const q = router.query || {}
-    const catQ = typeof q.category === 'string' ? q.category : ''
-    const nodeQ = typeof q.node === 'string' ? q.node : ''
-    if (catQ) setCategory(catQ)
-    if (nodeQ) setHighlightKey(nodeQ)
-  }, [router.query])
+  const [category, setCategory] = useUrlState('category')
+  const [highlightKey, setHighlightKey] = useUrlState('node')
 
   // Default to first category if none selected
   useEffect(() => {
@@ -80,7 +70,6 @@ export default function Tree() {
 
   function onNodeClick(key) {
     setHighlightKey(key)
-    router.replace({ pathname: router.pathname, query: { ...router.query, node: key } }, undefined, { shallow: true })
   }
 
   const detailsHref = highlightKey
@@ -123,7 +112,6 @@ export default function Tree() {
           <select value={category} onChange={e => {
             const val = e.target.value
             setCategory(val)
-            router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
           }}>
             {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
           </select>
