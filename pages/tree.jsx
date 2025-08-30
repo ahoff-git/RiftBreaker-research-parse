@@ -62,9 +62,12 @@ export default function Tree() {
 
   function onNodeClick(key) {
     setHighlightKey(key)
-    // Navigate to index page with the selected node
-    router.push({ pathname: '/', query: { key } })
+    router.replace({ pathname: router.pathname, query: { ...router.query, node: key } }, undefined, { shallow: true })
   }
+
+  const detailsHref = highlightKey
+    ? { pathname: '/', query: { key: highlightKey } }
+    : '/'
 
   return (
     <>
@@ -79,7 +82,7 @@ export default function Tree() {
             {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
           </select>
         </label>
-        <Link href="/" className="button">Main Page</Link>
+        <Link href={detailsHref} className="button">Details View</Link>
       </Header>
       <div className="techtree-container">
         <TechTreeCanvas
