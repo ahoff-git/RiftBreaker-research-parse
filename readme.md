@@ -35,6 +35,7 @@ Results:
 - `research_tree.json` – raw JSON converted from `research/research_tree.rt`.
 - `gui_lookup.json` – English text lookup extracted from `gui/0_ui_*.csv` (filtered to keys used by the tree, plus research descriptions).
 - `public/research_graph.json` – normalized graph including dependencies, reverse unlocks, costs, awards, positions, icon keys, and descriptions when available.
+  - Award nodes include friendly names and descriptions (buildings, weapons) when GUI keys are found, plus visibility flags.
   - Also includes `awardsResolved` with friendly names (when found via GUI CSVs).
 
 ### Individual Commands

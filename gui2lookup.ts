@@ -107,6 +107,40 @@ function collectGuiKeysFromJson(obj: any, acc: Set<string>) {
   }
 }
 
+function collectBlueprintIdsFromJson(obj: any, acc: Set<string>) {
+  if (obj == null) return;
+  const t = typeof obj;
+  if (t === 'string') {
+    const s = obj as string;
+    if (/^(buildings|items|resources)\//.test(s)) acc.add(s);
+    return;
+  }
+  if (Array.isArray(obj)) {
+    for (const v of obj) collectBlueprintIdsFromJson(v, acc);
+    return;
+  }
+  if (t === 'object') {
+    for (const k of Object.keys(obj)) collectBlueprintIdsFromJson((obj as any)[k], acc);
+    return;
+  }
+}
+
+function stripLevelSuffix(s: string): string {
+  return typeof s === 'string' ? s.replace(/_lvl_\d+$/i, '') : s;
+}
+
+function stripItemTierSuffix(s: string): string {
+  return typeof s === 'string' ? s
+    .replace(/_(advanced|superior|extreme)_item$/i, '')
+    .replace(/_item$/i, '')
+    : s as any;
+}
+
+function weaponSynonym(id: string): string {
+  const map: Record<string, string> = { flamer: 'flamethrower' };
+  return map[id] || id;
+}
+
 function main() {
   const guiDir = process.argv[2] || path.join(process.cwd(), "gui");
   const maybeFilter = process.argv[3];
@@ -135,6 +169,31 @@ function main() {
         }
       }
       for (const ek of extras) keysToInclude.add(ek);
+
+      // Also include GUI keys for awards (blueprints) present in the filter JSON
+      const bpIds = new Set<string>();
+      collectBlueprintIdsFromJson(filterJson, bpIds);
+      for (const id of Array.from(bpIds)) {
+        const parts = id.split('/');
+        if (parts.length < 2) continue;
+        const top = parts[0];
+        const last = parts[parts.length - 1];
+        if (top === 'buildings') {
+          const base = stripLevelSuffix(last);
+          keysToInclude.add(`gui/hud/building_name/${base}`);
+          keysToInclude.add(`gui/hud/building_description/${base}`);
+          const base2 = base.replace(/_(?:\d+|[a-z]{2})$/i, '');
+          keysToInclude.add(`gui/hud/building_name/${base2}`);
+          keysToInclude.add(`gui/hud/building_description/${base2}`);
+        } else if (top === 'items') {
+          const base0 = stripItemTierSuffix(last);
+          const base = weaponSynonym(base0);
+          keysToInclude.add(`gui/menu/inventory/weapon_name/${base}`);
+          keysToInclude.add(`gui/menu/inventory/weapon_charge_description/${base}`);
+        } else if (top === 'resources') {
+          keysToInclude.add(`resource_name/${last}`);
+        }
+      }
     } catch (e) {
       console.error("Failed to read/parse filter JSON:", e);
       process.exit(1);

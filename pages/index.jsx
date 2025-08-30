@@ -58,6 +58,8 @@ export default function Home() {
         <div className="kv">
           <div className="k">Name</div><div><strong>{detailNode.name || normalizeName({ key: activeKey })}</strong></div>
           <div className="k">Category</div><div>{detailNode.categoryName || detailNode.category || ''}</div>
+          {detailNode.type && (<><div className="k">Type</div><div className="muted">{detailNode.type}</div></>)}
+          {detailNode.requirementTooltip && (<><div className="k">Requirement Hint</div><div>{detailNode.requirementTooltip}</div></>)}
           {detailNode.description && (<><div className="k">Description</div><div>{detailNode.description}</div></>)}
           {detailNode.icon && (<><div className="k">Icon</div><div className="muted">{detailNode.icon}</div></>)}
           {detailNode.pos && (<><div className="k">Position</div><div className="muted">x:{detailNode.pos.x ?? ''} y:{detailNode.pos.y ?? ''}</div></>)}
@@ -66,6 +68,16 @@ export default function Home() {
         <div className="group">
           <h3>Direct Requirements ({reqs.length})</h3>
           <div className="list">{reqs.length ? reqs.map(r => <span key={r}>{nodeLink(r)}</span>) : <span className="muted">None</span>}</div>
+        </div>
+
+        <div className="group">
+          <h3>Direct Cost</h3>
+          <div className="costs">
+            {Array.isArray(detailNode.costs) && detailNode.costs.length ?
+              detailNode.costs.map((c, idx) => (
+                <span key={idx} className="cost"><strong>{c.resourceName || c.resource}</strong>: {formatNumber(c.count)}</span>
+              )) : <span className="muted">No costs</span>}
+          </div>
         </div>
 
         <div className="group">
@@ -91,7 +103,8 @@ export default function Home() {
             {awards.length ? (
               (awardsResolved.length ? awardsResolved : awards.map(id => ({ id }))).map((ra) => {
                 const k = ra.key || (`award:${ra.id}`)
-                const label = ra.name || (ra.key ? ra.key.split('/').pop() : (ra.id || '').split('/').pop())
+                const baseLabel = ra.name || (ra.key ? ra.key.split('/').pop() : (ra.id || '').split('/').pop())
+                const label = ra.visible === false ? `${baseLabel} (hidden)` : baseLabel
                 return (
                   <span key={k}>{nodeLink(k, label)}</span>
                 )
@@ -104,6 +117,13 @@ export default function Home() {
           <h3>Direct Unlocks ({unlocks.length})</h3>
           <div className="list">{unlocks.length ? unlocks.map(u => <span key={u}>{nodeLink(u)}</span>) : <span className="muted">None</span>}</div>
         </div>
+
+        {Array.isArray(detailNode.awardedBy) && detailNode.awardedBy.length > 0 && (
+          <div className="group">
+            <h3>Awarded By ({detailNode.awardedBy.length})</h3>
+            <div className="list">{detailNode.awardedBy.map(u => <span key={u}>{nodeLink(u)}</span>)}</div>
+          </div>
+        )}
       </>
     )
   } else {
