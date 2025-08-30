@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tsc --noEmit",
-    "tsnode": "node node_modules/ts-node/dist/bin.js",
+    "tsnode": "tsx",
     "convert": "npm run tsnode -- rt2json.ts ./research/research_tree.rt research_tree.json",
     "gui:lookup": "npm run tsnode -- gui2lookup.ts ./gui research_tree.json gui_lookup.json",
     "graph": "npm run tsnode -- analyze_research.ts research_tree.json gui_lookup.json public/research_graph.json",
@@ -23,6 +23,7 @@
     "@types/react": "19.1.12",
     "peggy": "^5.0.6",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   },
   "dependencies": {
