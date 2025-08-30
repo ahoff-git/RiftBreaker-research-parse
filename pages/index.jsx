@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 import { useGraph } from '../lib/useGraph.mjs'
+import MiniMap from '../components/MiniMap.jsx'
 
 const SHOW_TIP = false
 
@@ -69,6 +70,7 @@ export default function Home() {
 
     detailsContent = (
       <>
+        <MiniMap graph={graph} category={detailNode.category} highlightKey={activeKey} />
         <div className="kv">
           <div className="k">Name</div><div><strong>{detailNode.name || normalizeName({ key: activeKey })}</strong></div>
           <div className="k">Category</div><div>{detailNode.categoryName || detailNode.category || ''}</div>
