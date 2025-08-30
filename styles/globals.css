@@ -114,11 +114,18 @@ footer { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--mu
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: center;
+  justify-content: center;
 }
 
 .techtree-main, .techtree-mini {
   border: 1px solid var(--border);
   background: #0d1117;
+}
+
+.techtree-main {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Improve UX for interactive canvas */
