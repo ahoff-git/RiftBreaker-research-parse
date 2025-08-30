@@ -28,6 +28,7 @@ export default function MiniMap({ graph, category = null, highlightKey = null, w
         labelPx={8}
         showLabels={false}
         showEdges={true}
+        edgeMinScale={0}
         interactive={false}
         filterCategory={category}
         highlightKey={highlightKey}
