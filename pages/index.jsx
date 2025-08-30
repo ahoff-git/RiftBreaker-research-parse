@@ -72,7 +72,7 @@ export default function Home() {
 
   let detailsContent
   if (detailNode) {
-    const { order } = topoOrderForTarget(activeKey, graph)
+    const { order, set: reqSet } = topoOrderForTarget(activeKey, graph)
     const totalCosts = sumCosts(order, graph)
     const reqs = Array.isArray(detailNode.requires) ? detailNode.requires : []
     const unlocks = Array.isArray(detailNode.unlocks) ? detailNode.unlocks : []
@@ -81,7 +81,7 @@ export default function Home() {
 
     detailsContent = (
       <>
-        <MiniMap graph={graph} category={detailNode.category} highlightKey={activeKey} />
+        <MiniMap graph={graph} category={detailNode.category} highlightKey={activeKey} requireSet={reqSet} />
         <div className="kv">
           <div className="k">Name</div><div><strong>{detailNode.name || normalizeName({ key: activeKey })}</strong></div>
           <div className="k">Category</div><div>{detailNode.categoryName || detailNode.category || ''}</div>
