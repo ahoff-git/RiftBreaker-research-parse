@@ -48,7 +48,12 @@ aside {
 #results li.active { background: #1a2130; border-left: 3px solid var(--accent); }
 #results .muted { color: var(--muted); }
 
-#details { padding: 16px; overflow: auto; }
+#details {
+  padding: 16px;
+  overflow: auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .placeholder { color: var(--muted); }
 
 .kv { display: grid; grid-template-columns: 160px 1fr; gap: 6px 12px; margin-bottom: 12px; }
