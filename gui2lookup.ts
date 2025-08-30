@@ -126,6 +126,15 @@ function main() {
       const filterJson = JSON.parse(filterRaw);
       keysToInclude = new Set<string>();
       collectGuiKeysFromJson(filterJson, keysToInclude);
+      // Also include derived research description keys for every research name key
+      // Example: gui/menu/research/name/foo -> gui/menu/research/description/foo
+      const extras: string[] = [];
+      for (const k of Array.from(keysToInclude)) {
+        if (typeof k === 'string' && k.startsWith('gui/menu/research/name/')) {
+          extras.push(k.replace('/name/', '/description/'));
+        }
+      }
+      for (const ek of extras) keysToInclude.add(ek);
     } catch (e) {
       console.error("Failed to read/parse filter JSON:", e);
       process.exit(1);

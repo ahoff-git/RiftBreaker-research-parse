@@ -1,5 +1,5 @@
 // analyze_research.ts
-// Normalize research_tree.json into a graph and optionally enrich with English labels
+// Normalize research_tree.json into a graph and optionally enrich with English labels and descriptions
 // Usage:
 //   ts-node analyze_research.ts <research_tree.json> [gui_lookup.json] [out.json]
 // Produces a JSON with nodes keyed by research_name and reverse edges (unlocks)
@@ -14,6 +14,7 @@ type ResolvedAward = { id: string; key?: string; name?: string };
 type NodeRecord = {
   key: string;                  // research_name (gui key)
   name?: string;                // English label (from gui_lookup)
+  description?: string;         // English description (from gui_lookup)
   category?: string;            // tree category (gui key)
   categoryName?: string;        // English category (from gui_lookup)
   icon?: string;
@@ -117,6 +118,12 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
     if (lookup) {
       if (lookup[n.key]) byKey[n.key].name = lookup[n.key];
       if (n.category && lookup[n.category]) byKey[n.key].categoryName = lookup[n.category];
+      // Try to attach an English description: replace '/name/' with '/description/'
+      if (typeof n.key === 'string' && n.key.includes('/name/')) {
+        const descKey = n.key.replace('/name/', '/description/');
+        const desc = lookup[descKey];
+        if (desc) byKey[n.key].description = desc;
+      }
     }
   }
   // Resolve award blueprint ids to human-friendly names when possible

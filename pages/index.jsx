@@ -58,6 +58,7 @@ export default function Home() {
         <div className="kv">
           <div className="k">Name</div><div><strong>{detailNode.name || normalizeName({ key: activeKey })}</strong></div>
           <div className="k">Category</div><div>{detailNode.categoryName || detailNode.category || ''}</div>
+          {detailNode.description && (<><div className="k">Description</div><div>{detailNode.description}</div></>)}
           {detailNode.icon && (<><div className="k">Icon</div><div className="muted">{detailNode.icon}</div></>)}
           {detailNode.pos && (<><div className="k">Position</div><div className="muted">x:{detailNode.pos.x ?? ''} y:{detailNode.pos.y ?? ''}</div></>)}
         </div>

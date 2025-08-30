@@ -33,8 +33,8 @@ npm run data
 
 Results:
 - `research_tree.json` – raw JSON converted from `research/research_tree.rt`.
-- `gui_lookup.json` – English text lookup extracted from `gui/0_ui_*.csv` (filtered to keys used by the tree).
-- `public/research_graph.json` – normalized graph including dependencies, reverse unlocks, costs, awards, positions, and icon keys.
+- `gui_lookup.json` – English text lookup extracted from `gui/0_ui_*.csv` (filtered to keys used by the tree, plus research descriptions).
+- `public/research_graph.json` – normalized graph including dependencies, reverse unlocks, costs, awards, positions, icon keys, and descriptions when available.
   - Also includes `awardsResolved` with friendly names (when found via GUI CSVs).
 
 ### Individual Commands
