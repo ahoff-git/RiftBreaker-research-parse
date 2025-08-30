@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
 import MiniMap from '../components/MiniMap.jsx'
+import Footer from '../components/Footer.jsx'
 
 const MAIN_WIDTH = 800
 const MAIN_HEIGHT = 600
@@ -64,43 +65,46 @@ export default function Tree() {
   }
 
   return (
-    <div className="techtree-container">
-      <h1>Research Tech Tree</h1>
-      <div className="controls" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <label>
-          <span style={{ marginRight: 6 }}>Category</span>
-          <select value={category} onChange={e => {
-            const val = e.target.value
-            setCategory(val)
-            router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
-          }}>
-            {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
-          </select>
-        </label>
-        <Link href="/" className="button">Main Page</Link>
+    <>
+      <div className="techtree-container">
+        <h1>Research Tech Tree</h1>
+        <div className="controls" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <label>
+            <span style={{ marginRight: 6 }}>Category</span>
+            <select value={category} onChange={e => {
+              const val = e.target.value
+              setCategory(val)
+              router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
+            }}>
+              {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
+            </select>
+          </label>
+          <Link href="/" className="button">Main Page</Link>
+        </div>
+        <TechTreeCanvas
+          graph={graph}
+          bounds={bounds}
+          width={MAIN_WIDTH}
+          height={MAIN_HEIGHT}
+          scale={mainScale}
+          labelPx={12}
+          showLabels={true}
+          showEdges={true}
+          interactive={true}
+          filterCategory={category}
+          highlightKey={highlightKey}
+          onNodeClick={onNodeClick}
+          className="techtree-main"
+        />
+        <MiniMap
+          graph={graph}
+          category={category}
+          highlightKey={highlightKey}
+          width={MINI_WIDTH}
+          height={MINI_HEIGHT}
+        />
       </div>
-      <TechTreeCanvas
-        graph={graph}
-        bounds={bounds}
-        width={MAIN_WIDTH}
-        height={MAIN_HEIGHT}
-        scale={mainScale}
-        labelPx={12}
-        showLabels={true}
-        showEdges={true}
-        interactive={true}
-        filterCategory={category}
-        highlightKey={highlightKey}
-        onNodeClick={onNodeClick}
-        className="techtree-main"
-      />
-      <MiniMap
-        graph={graph}
-        category={category}
-        highlightKey={highlightKey}
-        width={MINI_WIDTH}
-        height={MINI_HEIGHT}
-      />
-    </div>
+      <Footer />
+    </>
   )
 }
