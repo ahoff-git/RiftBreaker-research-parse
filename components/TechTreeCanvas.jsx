@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { drawGraph } from '../lib/drawGraph.mjs'
 import { useCanvasPanZoom } from '../lib/useCanvasPanZoom.mjs'
 
-export default function TechTreeCanvas({ graph, width = 800, height = 600, scale = 1, bounds, className = '', labelPx = 12, showLabels = true, showEdges = true, interactive = true, filterCategory = null, highlightKey = null, requireSet = null, edgeMinScale, onNodeClick = null }) {
-  const { ref, zoom, pan, canvasProps } = useCanvasPanZoom({
+export default function TechTreeCanvas({ graph, width = 800, height = 600, scale = 1, bounds, className = '', labelPx = 12, showLabels = true, showEdges = true, interactive = true, filterCategory = null, highlightKey = null, requireSet = null, onNodeClick = null, onControls = null }) {
+  const { ref, zoom, pan, canvasProps, zoomIn, zoomOut } = useCanvasPanZoom({
     interactive,
     scale,
     bounds,
@@ -11,6 +11,10 @@ export default function TechTreeCanvas({ graph, width = 800, height = 600, scale
     filterCategory,
     onNodeClick,
   })
+
+  useEffect(() => {
+    if (onControls) onControls({ zoomIn, zoomOut })
+  }, [onControls, zoomIn, zoomOut])
 
   useEffect(() => {
     const canvas = ref.current

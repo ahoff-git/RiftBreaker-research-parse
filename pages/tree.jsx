@@ -5,6 +5,7 @@ import { useCategories } from '../lib/categories.mjs'
 import { useUrlState } from '../lib/useUrlState.mjs'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
+import ZoomButtons from '../components/ZoomButtons.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 import GraphStatus from '../components/GraphStatus.jsx'
@@ -73,6 +74,8 @@ export default function Tree() {
     setHighlightKey(key)
   }
 
+  const [controls, setControls] = useState(null)
+
   const detailsHref = highlightKey
     ? { pathname: '/', query: { key: highlightKey } }
     : '/'
@@ -94,7 +97,9 @@ export default function Tree() {
         requireSet={reqSet}
         onNodeClick={onNodeClick}
         className="techtree-main"
+        onControls={setControls}
       />
+      {controls && <ZoomButtons {...controls} />}
     </div>
   )
 
