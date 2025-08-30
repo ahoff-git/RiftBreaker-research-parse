@@ -6,6 +6,7 @@ import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
 import MiniMap from '../components/MiniMap.jsx'
 import Footer from '../components/Footer.jsx'
+import Header from '../components/Header.jsx'
 
 const MAIN_WIDTH = 800
 const MAIN_HEIGHT = 600
@@ -66,21 +67,20 @@ export default function Tree() {
 
   return (
     <>
+      <Header title="Research Tech Tree">
+        <label>
+          <span style={{ marginRight: 6 }}>Category</span>
+          <select value={category} onChange={e => {
+            const val = e.target.value
+            setCategory(val)
+            router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
+          }}>
+            {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
+          </select>
+        </label>
+        <Link href="/" className="button">Main Page</Link>
+      </Header>
       <div className="techtree-container">
-        <h1>Research Tech Tree</h1>
-        <div className="controls" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <label>
-            <span style={{ marginRight: 6 }}>Category</span>
-            <select value={category} onChange={e => {
-              const val = e.target.value
-              setCategory(val)
-              router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
-            }}>
-              {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
-            </select>
-          </label>
-          <Link href="/" className="button">Main Page</Link>
-        </div>
         <TechTreeCanvas
           graph={graph}
           bounds={bounds}

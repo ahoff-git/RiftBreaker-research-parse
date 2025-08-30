@@ -5,6 +5,7 @@ import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../li
 import { useGraph } from '../lib/useGraph.mjs'
 import MiniMap from '../components/MiniMap.jsx'
 import Footer from '../components/Footer.jsx'
+import Header from '../components/Header.jsx'
 
 const SHOW_TIP = false
 
@@ -162,23 +163,20 @@ export default function Home() {
 
   return (
     <>
-      <header>
-        <h1>RiftBreaker Research Explorer</h1>
-        <div className="controls">
-          <input
-            type="search"
-            placeholder="Search by name or key..."
-            value={search}
-            onChange={handleSearchChange}
-          />
-          <select value={category} onChange={e => setCategory(e.target.value)}>
-            <option value="">All categories</option>
-            {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
-          </select>
-          <span id="count">{filtered.length} results</span>
-          <Link href={treeHref} className="button">Tree View</Link>
-        </div>
-      </header>
+      <Header title="RiftBreaker Research Explorer">
+        <input
+          type="search"
+          placeholder="Search by name or key..."
+          value={search}
+          onChange={handleSearchChange}
+        />
+        <select value={category} onChange={e => setCategory(e.target.value)}>
+          <option value="">All categories</option>
+          {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
+        </select>
+        <span id="count">{filtered.length} results</span>
+        <Link href={treeHref} className="button">Tree View</Link>
+      </Header>
       <main className={listOpen ? 'list-open' : ''}>
         <aside>
           <ul id="results">
