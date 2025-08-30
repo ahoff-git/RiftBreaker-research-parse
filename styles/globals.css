@@ -34,15 +34,6 @@ header {
   border-bottom: 1px solid var(--border);
   background: var(--panel);
 }
-header .logo-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-header .logo {
-  height: 48px;
-  width: auto;
-}
 header h1 { margin: 0 0 8px; font-size: 18px; }
 header .controls { display: flex; gap: 12px; align-items: center; }
 
