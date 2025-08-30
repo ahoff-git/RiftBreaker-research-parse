@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useState, useMemo } from 'react'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 import { useGraph } from '../lib/useGraph.mjs'
@@ -108,6 +109,7 @@ export default function Home() {
             {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
           </select>
           <span id="count">{filtered.length} results</span>
+          <Link href="/tree" className="button">Tree View</Link>
         </div>
       </header>
       <main>
