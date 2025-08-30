@@ -7,6 +7,7 @@ import { useCategories } from '../lib/useCategories.mjs'
 import MiniMap from '../components/MiniMap.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
+import NodeLink from '../components/NodeLink.jsx'
 
 const SHOW_TIP = false
 
@@ -60,16 +61,6 @@ export default function Home() {
     router.push({ pathname: router.pathname, query: { ...router.query, key } }, undefined, { shallow: true })
   }
 
-  function nodeLink(key, overrideLabel) {
-    const n = graph && graph.nodes && graph.nodes[key]
-    const label = overrideLabel || (n && (n.name || normalizeName({ key })) || key.split('/').pop())
-    return (
-      <a href={`/?key=${encodeURIComponent(key)}`} className="item" onClick={e => { e.preventDefault(); setActiveAndUpdateUrl(key) }}>
-        {label}
-      </a>
-    )
-  }
-
   let detailsContent
   if (detailNode) {
     const { order, set: reqSet } = topoOrderForTarget(activeKey, graph)
@@ -96,7 +87,7 @@ export default function Home() {
 
         <div className="group">
           <h3>Direct Requirements ({reqs.length})</h3>
-          <div className="list">{reqs.length ? reqs.map(r => <span key={r}>{nodeLink(r)}</span>) : <span className="muted">None</span>}</div>
+          <div className="list">{reqs.length ? reqs.map(r => <span key={r}><NodeLink nodeKey={r} onClick={setActiveKey} /></span>) : <span className="muted">None</span>}</div>
         </div>
 
         <div className="group">
@@ -122,7 +113,7 @@ export default function Home() {
         <div className="group">
           <h3>Unlock Steps ({order.length})</h3>
           <ol>
-            {order.map(k => <li key={k}>{nodeLink(k)}</li>)}
+            {order.map(k => <li key={k}><NodeLink nodeKey={k} onClick={setActiveKey} /></li>)}
           </ol>
         </div>
 
@@ -135,7 +126,7 @@ export default function Home() {
                 const baseLabel = ra.name || (ra.key ? ra.key.split('/').pop() : (ra.id || '').split('/').pop())
                 const label = ra.visible === false ? `${baseLabel} (hidden)` : baseLabel
                 return (
-                  <span key={k}>{nodeLink(k, label)}</span>
+                  <span key={k}><NodeLink nodeKey={k} label={label} onClick={setActiveKey} /></span>
                 )
               })
             ) : <span className="muted">None</span>}
@@ -144,13 +135,13 @@ export default function Home() {
 
         <div className="group">
           <h3>Direct Unlocks ({unlocks.length})</h3>
-          <div className="list">{unlocks.length ? unlocks.map(u => <span key={u}>{nodeLink(u)}</span>) : <span className="muted">None</span>}</div>
+          <div className="list">{unlocks.length ? unlocks.map(u => <span key={u}><NodeLink nodeKey={u} onClick={setActiveKey} /></span>) : <span className="muted">None</span>}</div>
         </div>
 
         {Array.isArray(detailNode.awardedBy) && detailNode.awardedBy.length > 0 && (
           <div className="group">
             <h3>Awarded By ({detailNode.awardedBy.length})</h3>
-            <div className="list">{detailNode.awardedBy.map(u => <span key={u}>{nodeLink(u)}</span>)}</div>
+            <div className="list">{detailNode.awardedBy.map(u => <span key={u}><NodeLink nodeKey={u} onClick={setActiveKey} /></span>)}</div>
           </div>
         )}
       </>
