@@ -8,6 +8,7 @@
 
 import fs from "fs";
 import path from "path";
+import { stripLevelSuffix, stripItemTierSuffix, weaponSynonym } from "./lib/blueprintUtils";
 
 type Lookup = Map<string, string>; // key -> English text
 
@@ -123,22 +124,6 @@ function collectBlueprintIdsFromJson(obj: any, acc: Set<string>) {
     for (const k of Object.keys(obj)) collectBlueprintIdsFromJson((obj as any)[k], acc);
     return;
   }
-}
-
-function stripLevelSuffix(s: string): string {
-  return typeof s === 'string' ? s.replace(/_lvl_\d+$/i, '') : s;
-}
-
-function stripItemTierSuffix(s: string): string {
-  return typeof s === 'string' ? s
-    .replace(/_(advanced|superior|extreme)_item$/i, '')
-    .replace(/_item$/i, '')
-    : s as any;
-}
-
-function weaponSynonym(id: string): string {
-  const map: Record<string, string> = { flamer: 'flamethrower' };
-  return map[id] || id;
 }
 
 function main() {
