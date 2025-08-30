@@ -15,7 +15,7 @@ export default function Home() {
   const [activeKey, setActiveKey] = useState(null)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
-  const [listOpen, setListOpen] = useState(false)
+  const [listOpen, setListOpen] = useState(true)
 
   const handleSearchChange = e => {
     const value = e.target.value
@@ -52,6 +52,11 @@ export default function Home() {
     const k = (typeof q.key === 'string' ? q.key : (typeof q.node === 'string' ? q.node : null))
     if (k) setActiveKey(k)
   }, [router.query])
+
+  // Expand list when no node is selected
+  useEffect(() => {
+    setListOpen(!activeKey)
+  }, [activeKey])
 
   const detailNode = activeKey && graph ? graph.nodes[activeKey] : null
 
@@ -174,7 +179,7 @@ export default function Home() {
           <option value="">All categories</option>
           {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
         </select>
-        <span id="count">{filtered.length} results</span>
+        <span id="count" onClick={() => setListOpen(true)} style={{ cursor: 'pointer' }}>{filtered.length} results</span>
         <Link href={treeHref} className="button">Tree View</Link>
       </Header>
       <main className={listOpen ? 'list-open' : ''}>
