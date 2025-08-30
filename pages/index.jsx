@@ -13,6 +13,15 @@ export default function Home() {
   const [activeKey, setActiveKey] = useState(null)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
+  const [listOpen, setListOpen] = useState(false)
+
+  const handleSearchChange = e => {
+    const value = e.target.value
+    setSearch(value)
+    setListOpen(!!value.trim())
+  }
+
+  const collapseList = () => setListOpen(false)
 
   const categories = useMemo(() => {
     const cats = new Map()
@@ -151,7 +160,12 @@ export default function Home() {
       <header>
         <h1>RiftBreaker Research Explorer</h1>
         <div className="controls">
-          <input type="search" placeholder="Search by name or key..." value={search} onChange={e => setSearch(e.target.value)} />
+          <input
+            type="search"
+            placeholder="Search by name or key..."
+            value={search}
+            onChange={handleSearchChange}
+          />
           <select value={category} onChange={e => setCategory(e.target.value)}>
             <option value="">All categories</option>
             {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
@@ -160,7 +174,7 @@ export default function Home() {
           <Link href="/tree" className="button">Tree View</Link>
         </div>
       </header>
-      <main>
+      <main className={listOpen ? 'list-open' : ''}>
         <aside>
           <ul id="results">
             {filtered.map(n => (
@@ -170,7 +184,7 @@ export default function Home() {
             ))}
           </ul>
         </aside>
-        <section id="details">
+        <section id="details" onClick={collapseList}>
           {detailsContent}
         </section>
       </main>
