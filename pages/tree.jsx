@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from 'react'
 import { useGraph } from '../lib/useGraph.mjs'
 import { graphBounds, computeScale, graphBoundsForCategory, topoOrderForTarget } from '../lib/graphUtils.mjs'
-import { useCategories } from '../lib/useCategories.mjs'
+import { useCategories } from '../lib/categories.mjs'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
