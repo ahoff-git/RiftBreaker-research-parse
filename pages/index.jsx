@@ -59,6 +59,9 @@ export default function Home() {
   }, [activeKey])
 
   const detailNode = activeKey && graph ? graph.nodes[activeKey] : null
+  const treeHref = activeKey
+    ? { pathname: '/tree', query: { node: activeKey } }
+    : '/tree'
 
   function setActiveAndUpdateUrl(key) {
     setActiveKey(key)
@@ -86,7 +89,9 @@ export default function Home() {
 
     detailsContent = (
       <>
-        <MiniMap graph={graph} category={detailNode.category} highlightKey={activeKey} requireSet={reqSet} />
+        <Link href={treeHref}>
+          <MiniMap graph={graph} category={detailNode.category} highlightKey={activeKey} requireSet={reqSet} />
+        </Link>
         <div className="kv">
           <div className="k">Name</div><div><strong>{detailNode.name || normalizeName({ key: activeKey })}</strong></div>
           <div className="k">Category</div><div>{detailNode.categoryName || detailNode.category || ''}</div>
@@ -161,10 +166,6 @@ export default function Home() {
   } else {
     detailsContent = <div className="placeholder">{graph ? 'Select a node from the list.' : 'Load a graph, then search and select a node.'}</div>
   }
-
-  const treeHref = activeKey
-    ? { pathname: '/tree', query: { node: activeKey } }
-    : '/tree'
 
   return (
     <>
