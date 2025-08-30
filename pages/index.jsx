@@ -1,33 +1,14 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
+import { useGraph } from '../lib/useGraph.mjs'
 
-const DEFAULT_GRAPH_URL = '/research_graph.json'
 const SHOW_TIP = false
 
 export default function Home() {
-  const [graph, setGraph] = useState(null)
-  const [nodes, setNodes] = useState([])
+  const { graph, nodes } = useGraph()
   const [activeKey, setActiveKey] = useState(null)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
-
-  function loadGraphObject(obj) {
-    setGraph(obj)
-    setNodes(Object.entries(obj.nodes || {}).map(([k, v]) => ({ key: k, ...v })))
-  }
-
-  async function loadDefaultGraph() {
-    try {
-      const res = await fetch(DEFAULT_GRAPH_URL, { cache: 'no-store' })
-      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
-      const data = await res.json()
-      loadGraphObject(data)
-    } catch (e) {
-      alert('Could not fetch research_graph.json.\n' + e)
-    }
-  }
-
-  useEffect(() => { loadDefaultGraph() }, [])
 
   const categories = useMemo(() => {
     const cats = new Map()
