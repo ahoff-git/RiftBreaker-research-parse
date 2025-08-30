@@ -7,12 +7,39 @@ import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 
-const MAIN_WIDTH = 800
-const MAIN_HEIGHT = 600
+const WIDTH_MARGIN = 32
+const HEIGHT_MARGIN = 200
+
+function clamp(v, min, max) {
+  return Math.min(max, Math.max(min, v))
+}
+
+function useCanvasSize({
+  minWidth = 400,
+  maxWidth = 1600,
+  minHeight = 300,
+  maxHeight = 1200
+} = {}) {
+  const [size, setSize] = useState({ width: minWidth, height: minHeight })
+
+  useEffect(() => {
+    function update() {
+      const width = clamp(window.innerWidth - WIDTH_MARGIN, minWidth, maxWidth)
+      const height = clamp(window.innerHeight - HEIGHT_MARGIN, minHeight, maxHeight)
+      setSize({ width, height })
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [minWidth, maxWidth, minHeight, maxHeight])
+
+  return size
+}
 
 export default function Tree() {
   const router = useRouter()
   const { graph } = useGraph()
+  const { width: canvasWidth, height: canvasHeight } = useCanvasSize()
 
   // Category options and selection
   const categories = useMemo(() => {
@@ -58,7 +85,7 @@ export default function Tree() {
     return topoOrderForTarget(highlightKey, graph).set
   }, [graph, highlightKey])
 
-  const mainScale = useMemo(() => computeScale(MAIN_WIDTH, MAIN_HEIGHT, bounds), [bounds])
+  const mainScale = useMemo(() => computeScale(canvasWidth, canvasHeight, bounds), [bounds, canvasWidth, canvasHeight])
 
   function onNodeClick(key) {
     setHighlightKey(key)
@@ -88,8 +115,8 @@ export default function Tree() {
         <TechTreeCanvas
           graph={graph}
           bounds={bounds}
-          width={MAIN_WIDTH}
-          height={MAIN_HEIGHT}
+          width={canvasWidth}
+          height={canvasHeight}
           scale={mainScale}
           labelPx={12}
           showLabels={true}
