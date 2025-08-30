@@ -156,6 +156,10 @@ export default function Home() {
     detailsContent = <div className="placeholder">{graph ? 'Select a node from the list.' : 'Load a graph, then search and select a node.'}</div>
   }
 
+  const treeHref = activeKey
+    ? { pathname: '/tree', query: { node: activeKey } }
+    : '/tree'
+
   return (
     <>
       <header>
@@ -172,7 +176,7 @@ export default function Home() {
             {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
           </select>
           <span id="count">{filtered.length} results</span>
-          <Link href="/tree" className="button">Tree View</Link>
+          <Link href={treeHref} className="button">Tree View</Link>
         </div>
       </header>
       <main className={listOpen ? 'list-open' : ''}>
