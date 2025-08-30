@@ -90,3 +90,15 @@ footer { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--mu
     max-height: 40vh;
   }
 }
+
+.techtree-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.techtree-main, .techtree-mini {
+  border: 1px solid var(--border);
+  background: #0d1117;
+}
