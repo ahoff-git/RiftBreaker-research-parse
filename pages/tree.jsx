@@ -4,14 +4,11 @@ import { graphBounds, computeScale, graphBoundsForCategory, topoOrderForTarget }
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
-import MiniMap from '../components/MiniMap.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 
 const MAIN_WIDTH = 800
 const MAIN_HEIGHT = 600
-const MINI_WIDTH = 200
-const MINI_HEIGHT = 150
 
 export default function Tree() {
   const router = useRouter()
@@ -100,14 +97,6 @@ export default function Tree() {
           requireSet={reqSet}
           onNodeClick={onNodeClick}
           className="techtree-main"
-        />
-        <MiniMap
-          graph={graph}
-          category={category}
-          highlightKey={highlightKey}
-          width={MINI_WIDTH}
-          height={MINI_HEIGHT}
-          requireSet={reqSet}
         />
       </div>
       <Footer />
