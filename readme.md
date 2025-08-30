@@ -51,7 +51,7 @@ npm run gui:lookup
 npm run graph
 ```
 
-### Web App (Next.js)
+### Riftbreaker Research Web App
 
 - Dev server: `npm run dev` then open http://localhost:3000
 - Production: `npm run build && npm start`
