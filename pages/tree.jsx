@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useGraph } from '../lib/useGraph.mjs'
-import { graphBounds } from '../lib/graphUtils.mjs'
+import { graphBounds, computeScale } from '../lib/graphUtils.mjs'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
 
 const MAIN_WIDTH = 800
@@ -12,19 +12,15 @@ export default function Tree() {
   const { graph } = useGraph()
   const bounds = useMemo(() => graphBounds(graph), [graph])
 
-  const mainScale = useMemo(() => {
-    if (!bounds) return 1
-    const w = bounds.maxX - bounds.minX + 20
-    const h = bounds.maxY - bounds.minY + 20
-    return Math.min(MAIN_WIDTH / w, MAIN_HEIGHT / h)
-  }, [bounds])
+  const mainScale = useMemo(
+    () => computeScale(MAIN_WIDTH, MAIN_HEIGHT, bounds),
+    [bounds]
+  )
 
-  const miniScale = useMemo(() => {
-    if (!bounds) return 1
-    const w = bounds.maxX - bounds.minX + 20
-    const h = bounds.maxY - bounds.minY + 20
-    return Math.min(MINI_WIDTH / w, MINI_HEIGHT / h)
-  }, [bounds])
+  const miniScale = useMemo(
+    () => computeScale(MINI_WIDTH, MINI_HEIGHT, bounds),
+    [bounds]
+  )
 
   return (
     <div className="techtree-container">
