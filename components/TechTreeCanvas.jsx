@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { drawGraph } from '../lib/drawGraph.mjs'
 
-export default function TechTreeCanvas({ graph, width = 800, height = 600, scale = 1, bounds, className = '', labelPx = 12, showLabels = true, showEdges = true, interactive = true, filterCategory = null, highlightKey = null, onNodeClick = null }) {
+export default function TechTreeCanvas({ graph, width = 800, height = 600, scale = 1, bounds, className = '', labelPx = 12, showLabels = true, showEdges = true, interactive = true, filterCategory = null, highlightKey = null, requireSet = null, onNodeClick = null }) {
   const ref = useRef(null)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 }) // CSS px
@@ -35,8 +35,8 @@ export default function TechTreeCanvas({ graph, width = 800, height = 600, scale
     // Map 1 canvas unit to 1 CSS pixel (but with higher backing resolution)
     ctx.scale(dpr, dpr)
 
-    drawGraph(ctx, graph, { scale, bounds, labelPx, zoom, panX: pan.x, panY: pan.y, showLabels, showEdges, filterCategory, highlightKey })
-  }, [graph, scale, bounds, width, height, labelPx, zoom, pan.x, pan.y, showLabels, showEdges, filterCategory, highlightKey])
+    drawGraph(ctx, graph, { scale, bounds, labelPx, zoom, panX: pan.x, panY: pan.y, showLabels, showEdges, filterCategory, highlightKey, requireSet })
+  }, [graph, scale, bounds, width, height, labelPx, zoom, pan.x, pan.y, showLabels, showEdges, filterCategory, highlightKey, requireSet])
 
   const onWheel = useCallback((e) => {
     if (!interactive) return

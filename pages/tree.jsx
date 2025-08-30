@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react'
 import { useGraph } from '../lib/useGraph.mjs'
-import { graphBounds, computeScale, graphBoundsForCategory } from '../lib/graphUtils.mjs'
+import { graphBounds, computeScale, graphBoundsForCategory, topoOrderForTarget } from '../lib/graphUtils.mjs'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import TechTreeCanvas from '../components/TechTreeCanvas.jsx'
@@ -56,6 +56,10 @@ export default function Tree() {
 
   const boundsAll = useMemo(() => graphBounds(graph), [graph])
   const bounds = useMemo(() => graphBoundsForCategory(graph, category) || boundsAll, [graph, category, boundsAll])
+  const reqSet = useMemo(() => {
+    if (!graph || !highlightKey) return null
+    return topoOrderForTarget(highlightKey, graph).set
+  }, [graph, highlightKey])
 
   const mainScale = useMemo(() => computeScale(MAIN_WIDTH, MAIN_HEIGHT, bounds), [bounds])
 
@@ -93,6 +97,7 @@ export default function Tree() {
           interactive={true}
           filterCategory={category}
           highlightKey={highlightKey}
+          requireSet={reqSet}
           onNodeClick={onNodeClick}
           className="techtree-main"
         />
@@ -102,6 +107,7 @@ export default function Tree() {
           highlightKey={highlightKey}
           width={MINI_WIDTH}
           height={MINI_HEIGHT}
+          requireSet={reqSet}
         />
       </div>
       <Footer />
