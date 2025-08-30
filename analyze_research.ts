@@ -23,6 +23,8 @@ type NodeRecord = {
   requires: string[];           // prerequisite research keys
   unlocks: string[];            // filled by reverse edges
   awardsResolved?: ResolvedAward[]; // award names resolved via GUI lookup
+  // For synthetic award/include nodes, track which research grants them
+  awardedBy?: string[];
 };
 
 function loadJson(file: string): any {
@@ -141,6 +143,55 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
       if (dep) {
         if (!dep.unlocks.includes(n.key)) dep.unlocks.push(n.key);
       }
+    }
+  }
+  // Add synthetic nodes for award "includes" so they appear in the list/search
+  // These nodes are keyed by a stable synthetic id and point back to the research that grants them
+  const awardOwners: Map<string, Set<string>> = new Map(); // blueprint id -> research keys
+  for (const n of Object.values(byKey)) {
+    if (!n.awards || !n.awards.length) continue;
+    for (const id of n.awards) {
+      if (!awardOwners.has(id)) awardOwners.set(id, new Set());
+      awardOwners.get(id)!.add(n.key);
+    }
+  }
+
+  for (const [awardId, owners] of awardOwners.entries()) {
+    // Prefer a UI key when available for better naming; otherwise use a synthetic award: prefix
+    let synthKey: string | undefined;
+    let synthName: string | undefined;
+    if (lookup) {
+      const uiKey = blueprintToUiKey(awardId, lookup);
+      if (uiKey) {
+        synthKey = uiKey; // safe: distinct namespace from research keys
+        synthName = lookup[uiKey];
+      }
+    }
+    if (!synthKey) synthKey = `award:${awardId}`;
+
+    if (!byKey[synthKey]) {
+      byKey[synthKey] = {
+        key: synthKey,
+        name: synthName,
+        // keep category empty to avoid mixing with research filters
+        requires: Array.from(owners),
+        unlocks: [],
+        awardedBy: Array.from(owners)
+      };
+    } else {
+      // If a node with this key already exists (shouldn't for research vs GUI keys), just append relationships
+      const node = byKey[synthKey];
+      const reqSet = new Set(node.requires || []);
+      for (const o of owners) reqSet.add(o);
+      node.requires = Array.from(reqSet);
+      const bySet = new Set(node.awardedBy || []);
+      for (const o of owners) bySet.add(o);
+      node.awardedBy = Array.from(bySet);
+    }
+    // Link reverse edges: each owner research unlocks the award node
+    for (const o of owners) {
+      const ownerNode = byKey[o];
+      if (ownerNode && !ownerNode.unlocks.includes(synthKey)) ownerNode.unlocks.push(synthKey);
     }
   }
   return byKey;

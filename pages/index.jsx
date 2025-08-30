@@ -34,9 +34,9 @@ export default function Home() {
 
   const detailNode = activeKey && graph ? graph.nodes[activeKey] : null
 
-  function nodeLink(key) {
+  function nodeLink(key, overrideLabel) {
     const n = graph && graph.nodes && graph.nodes[key]
-    const label = n && (n.name || normalizeName({ key })) || key.split('/').pop()
+    const label = overrideLabel || (n && (n.name || normalizeName({ key })) || key.split('/').pop())
     return (
       <a href="#" className="item" onClick={e => { e.preventDefault(); setActiveKey(key) }}>
         {label}
@@ -51,6 +51,7 @@ export default function Home() {
     const reqs = Array.isArray(detailNode.requires) ? detailNode.requires : []
     const unlocks = Array.isArray(detailNode.unlocks) ? detailNode.unlocks : []
     const awards = Array.isArray(detailNode.awards) ? detailNode.awards : []
+    const awardsResolved = Array.isArray(detailNode.awardsResolved) ? detailNode.awardsResolved : []
 
     detailsContent = (
       <>
@@ -85,7 +86,17 @@ export default function Home() {
 
         <div className="group">
           <h3>Awards</h3>
-          <div className="list">{awards.length ? awards.map(a => <span key={a} className="item">{a}</span>) : <span className="muted">None</span>}</div>
+          <div className="list">
+            {awards.length ? (
+              (awardsResolved.length ? awardsResolved : awards.map(id => ({ id }))).map((ra) => {
+                const k = ra.key || (`award:${ra.id}`)
+                const label = ra.name || (ra.key ? ra.key.split('/').pop() : (ra.id || '').split('/').pop())
+                return (
+                  <span key={k}>{nodeLink(k, label)}</span>
+                )
+              })
+            ) : <span className="muted">None</span>}
+          </div>
         </div>
 
         <div className="group">
