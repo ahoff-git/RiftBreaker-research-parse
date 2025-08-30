@@ -13,7 +13,7 @@ const SHOW_TIP = false
 
 export default function Home() {
   const router = useRouter()
-  const { graph, nodes } = useGraph()
+  const { graph, nodes, loading, error } = useGraph()
   const [activeKey, setActiveKey] = useState(null)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
@@ -146,8 +146,12 @@ export default function Home() {
         )}
       </>
     )
+  } else if (loading) {
+    detailsContent = <div className="placeholder">Loading graph…</div>
+  } else if (error) {
+    detailsContent = <div className="placeholder">Could not load graph.</div>
   } else {
-    detailsContent = <div className="placeholder">{graph ? 'Select a node from the list.' : 'Load a graph, then search and select a node.'}</div>
+    detailsContent = <div className="placeholder">Load a graph, then search and select a node.</div>
   }
 
   return (
@@ -163,7 +167,9 @@ export default function Home() {
           <option value="">All categories</option>
           {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
         </select>
-        <span id="count" onClick={() => setListOpen(true)} style={{ cursor: 'pointer' }}>{filtered.length} results</span>
+        <span id="count" onClick={() => setListOpen(true)} style={{ cursor: 'pointer' }}>
+          {loading ? 'Loading…' : (error ? 'Error' : `${filtered.length} results`)}
+        </span>
         <Link href={treeHref} className="button">Tree View</Link>
       </Header>
       <main className={listOpen ? 'list-open' : ''}>
