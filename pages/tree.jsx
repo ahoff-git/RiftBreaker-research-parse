@@ -39,7 +39,7 @@ function useCanvasSize({
 
 export default function Tree() {
   const router = useRouter()
-  const { graph } = useGraph()
+  const { graph, loading, error } = useGraph()
   const { width: canvasWidth, height: canvasHeight } = useCanvasSize()
 
   // Category options and selection
@@ -87,21 +87,13 @@ export default function Tree() {
     ? { pathname: '/', query: { key: highlightKey } }
     : '/'
 
-  return (
-    <>
-      <Header title="Research Tech Tree">
-        <label>
-          <span style={{ marginRight: 6 }}>Category</span>
-          <select value={category} onChange={e => {
-            const val = e.target.value
-            setCategory(val)
-            router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
-          }}>
-            {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
-          </select>
-        </label>
-        <Link href={detailsHref} className="button">Details View</Link>
-      </Header>
+  let content
+  if (loading) {
+    content = <div className="techtree-container"><div className="placeholder">Loading graph…</div></div>
+  } else if (error) {
+    content = <div className="techtree-container"><div className="placeholder">Could not load graph.</div></div>
+  } else {
+    content = (
       <div className="techtree-container">
         <TechTreeCanvas
           graph={graph}
@@ -120,6 +112,25 @@ export default function Tree() {
           className="techtree-main"
         />
       </div>
+    )
+  }
+
+  return (
+    <>
+      <Header title="Research Tech Tree">
+        <label>
+          <span style={{ marginRight: 6 }}>Category</span>
+          <select value={category} onChange={e => {
+            const val = e.target.value
+            setCategory(val)
+            router.replace({ pathname: router.pathname, query: { ...router.query, category: val, node: highlightKey || undefined } }, undefined, { shallow: true })
+          }}>
+            {categories.map(([val, disp]) => <option key={val} value={val}>{disp}</option>)}
+          </select>
+        </label>
+        <Link href={detailsHref} className="button">Details View</Link>
+      </Header>
+      {content}
       <Footer />
     </>
   )
