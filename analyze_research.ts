@@ -10,6 +10,7 @@ import path from "path";
 type Lookup = Record<string, string>;
 
 type Cost = { resource: string; count: number };
+type ResolvedAward = { id: string; key?: string; name?: string };
 type NodeRecord = {
   key: string;                  // research_name (gui key)
   name?: string;                // English label (from gui_lookup)
@@ -21,6 +22,7 @@ type NodeRecord = {
   awards?: string[];            // blueprints unlocked
   requires: string[];           // prerequisite research keys
   unlocks: string[];            // filled by reverse edges
+  awardsResolved?: ResolvedAward[]; // award names resolved via GUI lookup
 };
 
 function loadJson(file: string): any {
@@ -115,6 +117,24 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
       if (n.category && lookup[n.category]) byKey[n.key].categoryName = lookup[n.category];
     }
   }
+  // Resolve award blueprint ids to human-friendly names when possible
+  if (lookup) {
+    for (const n of Object.values(byKey)) {
+      if (!n.awards || !n.awards.length) continue;
+      const resolved: ResolvedAward[] = [];
+      for (const id of n.awards) {
+        const ra: ResolvedAward = { id };
+        const key = blueprintToUiKey(id, lookup);
+        if (key) {
+          ra.key = key;
+          const name = lookup[key];
+          if (name) ra.name = name;
+        }
+        resolved.push(ra);
+      }
+      if (resolved.length) n.awardsResolved = resolved;
+    }
+  }
   for (const n of nodes) {
     for (const req of n.requires) {
       const dep = byKey[req];
@@ -124,6 +144,62 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
     }
   }
   return byKey;
+}
+
+function stripLevelSuffix(s: string): string {
+  return typeof s === 'string' ? s.replace(/_lvl_\d+$/i, '') : s;
+}
+
+function stripItemTierSuffix(s: string): string {
+  return typeof s === 'string' ? s
+    .replace(/_(advanced|superior|extreme)_item$/i, '')
+    .replace(/_item$/i, '')
+  : s;
+}
+
+function weaponSynonym(id: string): string {
+  // Handle common mismatches between blueprint ids and GUI keys
+  const map: Record<string, string> = {
+    flamer: 'flamethrower',
+  };
+  return map[id] || id;
+}
+
+function blueprintToUiKey(id: string, lookup: Lookup): string | undefined {
+  // buildings/... -> gui/hud/building_name/<base>
+  // items/weapons/... -> gui/menu/inventory/weapon_name/<base>
+  // resources/... -> resource_name/<base>
+  if (typeof id !== 'string') return undefined;
+  const parts = id.split('/');
+  if (parts.length < 2) return undefined;
+  const top = parts[0];
+  const last = parts[parts.length - 1];
+
+  if (top === 'buildings') {
+    const base = stripLevelSuffix(last);
+    const key = `gui/hud/building_name/${base}`;
+    if (lookup[key]) return key;
+    // try dropping variant suffixes like _01/_02
+    const base2 = base.replace(/_(?:\d+|[a-z]{2})$/i, '');
+    const key2 = `gui/hud/building_name/${base2}`;
+    if (lookup[key2]) return key2;
+    return undefined;
+  }
+
+  if (top === 'items') {
+    const base0 = stripItemTierSuffix(last);
+    const base = weaponSynonym(base0);
+    const key = `gui/menu/inventory/weapon_name/${base}`;
+    if (lookup[key]) return key;
+    return undefined;
+  }
+
+  if (top === 'resources') {
+    const key = `resource_name/${last}`;
+    if (lookup[key]) return key;
+    return undefined;
+  }
+  return undefined;
 }
 
 function main() {

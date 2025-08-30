@@ -1,59 +1,67 @@
-1) Open up the `RiftBreaker - Tools`
-2) Create a workspace
-3) Copy the `gui` and `research` folders into your _workspace_ and then this _project folder_
- - Note, you will be creating folders for `gui` and `research` 
- - `research` will have your `research_tree.rt` file 
- - `gui` will have your `0_ui_*.csv` files (should be about 6 of them)
+## The Riftbreaker Research Tree – Setup and Data
 
-You'll need to copy and run the following: (these should also be in your package.json file)
+This project converts The Riftbreaker research tree into JSON, enriches it with GUI labels, and serves a simple web viewer.
 
-npm init -y
-npm i -D ts-node peggy
-$ npx ts-node rt2json.ts ./research/research_tree.rt > research_tree.json
+### What You Need To Copy In
 
-## GUI lookup generator
+From your Riftbreaker Tools or game data exports, copy the following into this project:
 
-## Research graph
+1) Folder `research/`
+   - Must contain `research_tree.rt` (the source research tree file).
 
-Normalize the research tree and build dependency/unlock relationships.
+2) Folder `gui/`
+   - Must contain the UI localization CSVs: `0_ui_*.csv` (usually 6 files).
+   - These provide English labels for research node names, categories, building names, resources, etc.
 
-Commands:
-- Generate graph (enriched with English labels if available):
-  - `npx ts-node analyze_research.ts research_tree.json gui_lookup.json > public/research_graph.json`
+That’s it. Icons are referenced by string keys (e.g. `gui/menu/research/icons/...`) and are not required for generation. Blueprint definitions (e.g. `buildings/defense/ai_hub_lvl_2`, `items/weapons/flamer_item`, `resources/ammo_mech_liquid`) are referenced by id in the research tree but their detailed data lives in the game assets and is not included here.
 
-Output structure (research_graph.json):
-- `stats`: counts
-- `nodes`: map from research key to an object containing:
-  - `name`: English label (if provided by gui_lookup)
-  - `category`: research category key
-  - `requires`: prerequisite research keys (array)
-  - `unlocks`: reverse edges (computed)
-  - `costs`: list of `{ resource, count }`
-  - `awards`: unlocked blueprint ids
-  - `icon`, `pos`: optional metadata
+### Install
 
-## Web App (Next.js)
+```bash
+npm install
+```
 
-Explore the research graph in a browser using a Next.js site.
+### Generate All Data
 
-- Start the dev server: `npm run dev` then open `http://localhost:3000`
-- Build for production: `npm run build` and `npm start`
-- Place `research_graph.json` in the `public/` directory so it's served at the site root and will load automatically on startup.
-- Search by English name or key, filter by category, click a result to view:
-  - Direct requirements
-  - Total cost including all prerequisites
-  - Ordered unlock steps (topological order)
-  - Awards and direct unlocks
+Converts the `.rt` to JSON, builds the GUI lookup, and writes a normalized graph for the web app.
 
+```bash
+npm run all
+# or
+npm run data
+```
 
-Build an English lookup map from `gui/0_ui_*.csv` files and (optionally) filter to only the keys referenced in `research_tree.json`.
+Results:
+- `research_tree.json` – raw JSON converted from `research/research_tree.rt`.
+- `gui_lookup.json` – English text lookup extracted from `gui/0_ui_*.csv` (filtered to keys used by the tree).
+- `public/research_graph.json` – normalized graph including dependencies, reverse unlocks, costs, awards, positions, and icon keys.
+  - Also includes `awardsResolved` with friendly names (when found via GUI CSVs).
 
-Commands:
-- Generate full map to stdout:
-  - `npx ts-node gui2lookup.ts ./gui > gui_lookup.json`
-- Filter to only keys referenced in `research_tree.json` and write to file:
-  - `npx ts-node gui2lookup.ts ./gui research_tree.json gui_lookup.json`
+### Individual Commands
 
-Notes:
-- The parser treats the first semicolon as the delimiter and preserves remaining semicolons in the text, handling simple quoted values.
-- It prefers language `1` (English) when multiple `0_ui_*.csv` are present. If English is missing, it falls back to the lowest available language number.
+```bash
+# Convert RT -> JSON
+npm run convert
+
+# Build GUI lookup (filtered to keys found in research_tree.json)
+npm run gui:lookup
+
+# Normalize into web graph JSON
+npm run graph
+```
+
+### Web App (Next.js)
+
+- Dev server: `npm run dev` then open http://localhost:3000
+- Production: `npm run build && npm start`
+- The viewer loads `public/research_graph.json` on startup.
+
+### Where The “Rest of the Data” Lives
+
+- Research node icons: stored as string keys in `research_tree.json` (e.g. `gui/menu/research/icons/defense`). The actual image assets are part of the game and are not included here.
+- Award blueprints: listed under each node’s `research_awards` in `research_tree.json` (e.g. `buildings/defense/ai_hub_lvl_2`, `items/weapons/flamer_item`, `resources/ammo_mech_liquid`). Full blueprint definitions (stats, art) reside in the game’s data packs.
+
+### Notes
+
+- The GUI CSV parser handles quoted values and basic semicolon separation.
+- The GUI lookup prefers English entries when present.
