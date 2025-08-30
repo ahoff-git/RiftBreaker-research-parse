@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { drawGraph } from '../lib/drawGraph.mjs'
 import { useCanvasPanZoom } from '../lib/useCanvasPanZoom.mjs'
 
-export default function TechTreeCanvas({ graph, width = 800, height = 600, scale = 1, bounds, className = '', labelPx = 12, showLabels = true, showEdges = true, interactive = true, filterCategory = null, highlightKey = null, requireSet = null, onNodeClick = null, onControls = null }) {
+export default function TechTreeCanvas({ graph, width = 800, height = 600, scale = 1, bounds, className = '', labelPx = 12, showLabels = true, showEdges = true, edgeMinScale = 0.35, interactive = true, filterCategory = null, highlightKey = null, requireSet = null, onNodeClick = null, onControls = null }) {
   const { ref, zoom, pan, canvasProps, zoomIn, zoomOut } = useCanvasPanZoom({
     interactive,
     scale,
