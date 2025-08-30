@@ -137,6 +137,42 @@ function extractNodes(data: any): NodeRecord[] {
   return out;
 }
 
+function propagateCategories(map: Record<string, NodeRecord>, lookup?: Lookup): void {
+  const cache = new Map<string, string | undefined>();
+  const resolve = (key: string, stack: Set<string> = new Set()): string | undefined => {
+    if (cache.has(key)) return cache.get(key);
+    const node = map[key];
+    if (!node) return undefined;
+    if (node.category) {
+      cache.set(key, node.category);
+      return node.category;
+    }
+    if (stack.has(key)) return undefined;
+    stack.add(key);
+    for (const req of node.requires) {
+      const cat = resolve(req, stack);
+      if (cat) {
+        cache.set(key, cat);
+        stack.delete(key);
+        return cat;
+      }
+    }
+    stack.delete(key);
+    cache.set(key, undefined);
+    return undefined;
+  };
+
+  for (const n of Object.values(map)) {
+    if (!n.category) {
+      const cat = resolve(n.key);
+      if (cat) {
+        n.category = cat;
+        if (lookup && lookup[cat]) n.categoryName = lookup[cat];
+      }
+    }
+  }
+}
+
 function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRecord> {
   const byKey: Record<string, NodeRecord> = {};
   for (const n of nodes) {
@@ -199,6 +235,7 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
       }
     }
   }
+  propagateCategories(byKey, lookup);
   // Add synthetic nodes for award "includes" so they appear in the list/search
   // These nodes are keyed by a stable synthetic id and point back to the research that grants them
   const awardOwners: Map<string, Set<string>> = new Map(); // blueprint id -> research keys
