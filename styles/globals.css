@@ -124,3 +124,4 @@ footer { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--mu
 /* Improve UX for interactive canvas */
 .techtree-main { cursor: grab; }
 .techtree-main:active { cursor: grabbing; }
+.techtree-mini { overflow: hidden; }
