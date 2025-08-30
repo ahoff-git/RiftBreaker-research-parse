@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 import { useGraph } from '../lib/useGraph.mjs'
+import { useCategories } from '../lib/useCategories.mjs'
 import MiniMap from '../components/MiniMap.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
@@ -25,16 +26,7 @@ export default function Home() {
 
   const collapseList = () => setListOpen(false)
 
-  const categories = useMemo(() => {
-    const cats = new Map()
-    nodes.forEach(n => {
-      if (n.category) {
-        const disp = n.categoryName || n.category
-        if (!cats.has(n.category)) cats.set(n.category, disp)
-      }
-    })
-    return Array.from(cats.entries()).sort((a, b) => String(a[1]).localeCompare(String(b[1])))
-  }, [nodes])
+  const categories = useCategories(nodes)
 
   const filtered = useMemo(() => {
     let items = nodes
