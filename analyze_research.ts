@@ -6,6 +6,7 @@
 
 import fs from "fs";
 import path from "path";
+import { stripLevelSuffix, stripItemTierSuffix, weaponSynonym } from "./lib/blueprintUtils";
 
 type Lookup = Record<string, string>;
 
@@ -293,25 +294,6 @@ function buildGraph(nodes: NodeRecord[], lookup?: Lookup): Record<string, NodeRe
     }
   }
   return byKey;
-}
-
-function stripLevelSuffix(s: string): string {
-  return typeof s === 'string' ? s.replace(/_lvl_\d+$/i, '') : s;
-}
-
-function stripItemTierSuffix(s: string): string {
-  return typeof s === 'string' ? s
-    .replace(/_(advanced|superior|extreme)_item$/i, '')
-    .replace(/_item$/i, '')
-  : s;
-}
-
-function weaponSynonym(id: string): string {
-  // Handle common mismatches between blueprint ids and GUI keys
-  const map: Record<string, string> = {
-    flamer: 'flamethrower',
-  };
-  return map[id] || id;
 }
 
 function classifyBlueprint(id: string): 'building'|'weapon'|'resource' | undefined {
