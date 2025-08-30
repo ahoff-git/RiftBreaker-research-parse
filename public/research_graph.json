@@ -583,7 +583,7 @@
         {
           "id": "resources/ammo_tower_low_caliber",
           "key": "resource_name/ammo_tower_low_caliber",
-          "name": "Low caliber <img=gui/hud/building_info_tower>",
+          "name": "Low caliber",
           "type": "resource",
           "visible": true
         }
@@ -4135,7 +4135,7 @@
         {
           "id": "resources/ammo_tower_liquid",
           "key": "resource_name/ammo_tower_liquid",
-          "name": "Liquid <img=gui/hud/building_info_tower>",
+          "name": "Liquid",
           "type": "resource",
           "visible": true
         }
@@ -4753,7 +4753,7 @@
         {
           "id": "resources/ammo_tower_explosive",
           "key": "resource_name/ammo_tower_explosive",
-          "name": "Explosive <img=gui/hud/building_info_tower>",
+          "name": "Explosive",
           "type": "resource",
           "visible": true
         }
@@ -6994,7 +6994,7 @@
         {
           "id": "resources/ammo_tower_high_caliber",
           "key": "resource_name/ammo_tower_high_caliber",
-          "name": "High caliber <img=gui/hud/building_info_tower>",
+          "name": "High caliber",
           "type": "resource",
           "visible": true
         }
@@ -7150,7 +7150,7 @@
         {
           "id": "resources/ammo_mech_liquid",
           "key": "resource_name/ammo_mech_liquid",
-          "name": "Liquid <img=gui/hud/building_info_mech>",
+          "name": "Liquid",
           "type": "resource",
           "visible": true
         }
@@ -10855,7 +10855,7 @@
         {
           "id": "resources/ammo_mech_explosive",
           "key": "resource_name/ammo_mech_explosive",
-          "name": "Explosive <img=gui/hud/building_info_mech>",
+          "name": "Explosive",
           "type": "resource",
           "visible": true
         }
@@ -11036,14 +11036,14 @@
         {
           "id": "resources/ammo_mech_high_caliber",
           "key": "resource_name/ammo_mech_high_caliber",
-          "name": "High caliber <img=gui/hud/building_info_mech>",
+          "name": "High caliber",
           "type": "resource",
           "visible": true
         },
         {
           "id": "resources/ammo_mech_low_caliber",
           "key": "resource_name/ammo_mech_low_caliber",
-          "name": "Low caliber <img=gui/hud/building_info_mech>",
+          "name": "Low caliber",
           "type": "resource",
           "visible": true
         }
@@ -23334,7 +23334,7 @@
         {
           "id": "resources/ammo_tower_liquid",
           "key": "resource_name/ammo_tower_liquid",
-          "name": "Liquid <img=gui/hud/building_info_tower>",
+          "name": "Liquid",
           "type": "resource",
           "visible": true
         }
@@ -23498,7 +23498,7 @@
         {
           "id": "resources/ammo_tower_high_caliber",
           "key": "resource_name/ammo_tower_high_caliber",
-          "name": "High caliber <img=gui/hud/building_info_tower>",
+          "name": "High caliber",
           "type": "resource",
           "visible": true
         }
@@ -24691,7 +24691,7 @@
         "gui/menu/research/name/gravitational_hyper_lens_lvl_2",
         "gui/hud/building_name/gravitational_hyper_lens"
       ],
-      "name": "Gravitational Hyper Lens -  lvl. 1",
+      "name": "Gravitational Hyper Lens - lvl. 1",
       "categoryName": "Megastructures",
       "description": "A lens capable of bending space to create zero-gravity conditions. It allows for the construction of structures on an unimaginable scale and reveals solid resource deposits across the entire map, even in unexplored areas.",
       "awardsResolved": [
@@ -24744,7 +24744,7 @@
         "gui/menu/research/name/gravitational_hyper_lens_lvl_3",
         "gui/hud/building_name/gravitational_hyper_lens"
       ],
-      "name": "Gravitational Hyper Lens -  lvl. 2",
+      "name": "Gravitational Hyper Lens - lvl. 2",
       "categoryName": "Megastructures",
       "description": "This upgrade enhances the lens with deep-spectrum thermal and gas anomaly scanning. It enables the detection of geothermal faults and natural flammable gas vents across the operational zone.",
       "awardsResolved": [
@@ -24797,7 +24797,7 @@
         "gui/menu/research/name/gravitational_hyper_lens_lvl_4",
         "gui/hud/building_name/gravitational_hyper_lens"
       ],
-      "name": "Gravitational Hyper Lens -  lvl. 3",
+      "name": "Gravitational Hyper Lens - lvl. 3",
       "categoryName": "Megastructures",
       "description": "The lens is upgraded with biome-aware terrain analysis algorithms. This enables the detection of hidden biocaches within its scanning range.",
       "awardsResolved": [
@@ -24850,7 +24850,7 @@
         "gui/menu/research/name/gravitational_hyper_lens_lvl_5",
         "gui/hud/building_name/gravitational_hyper_lens"
       ],
-      "name": "Gravitational Hyper Lens -  lvl. 4",
+      "name": "Gravitational Hyper Lens - lvl. 4",
       "categoryName": "Megastructures",
       "description": "Advanced spectral filters allow the lens to identify major bioanomalies and power wells. This enables precise planning of base locations and research structures.",
       "awardsResolved": [
@@ -24903,7 +24903,7 @@
         "gui/menu/research/name/arcology_workshop",
         "gui/hud/building_name/gravitational_hyper_lens"
       ],
-      "name": "Gravitational Hyper Lens -  lvl. 5",
+      "name": "Gravitational Hyper Lens - lvl. 5",
       "categoryName": "Megastructures",
       "description": "The lens gains deep subsurface scanning capabilities. It reveals hidden underground resource deposits and buried treasuries across the entire map.",
       "awardsResolved": [
@@ -25095,7 +25095,7 @@
     },
     "resource_name/ammo_tower_low_caliber": {
       "key": "resource_name/ammo_tower_low_caliber",
-      "name": "Low caliber <img=gui/hud/building_info_tower>",
+      "name": "Low caliber",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/towers_minigun_lvl1"
@@ -26170,7 +26170,7 @@
     },
     "resource_name/ammo_tower_liquid": {
       "key": "resource_name/ammo_tower_liquid",
-      "name": "Liquid <img=gui/hud/building_info_tower>",
+      "name": "Liquid",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/towers_flamer_lvl1",
@@ -26197,7 +26197,7 @@
     },
     "resource_name/ammo_tower_explosive": {
       "key": "resource_name/ammo_tower_explosive",
-      "name": "Explosive <img=gui/hud/building_info_tower>",
+      "name": "Explosive",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/towers_artillery_lvl1"
@@ -26641,7 +26641,7 @@
     },
     "resource_name/ammo_tower_high_caliber": {
       "key": "resource_name/ammo_tower_high_caliber",
-      "name": "High caliber <img=gui/hud/building_info_tower>",
+      "name": "High caliber",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/tower_shotgun_lvl1",
@@ -26673,7 +26673,7 @@
     },
     "resource_name/ammo_mech_liquid": {
       "key": "resource_name/ammo_mech_liquid",
-      "name": "Liquid <img=gui/hud/building_info_mech>",
+      "name": "Liquid",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_weapons_liquid_standard"
@@ -27455,7 +27455,7 @@
     },
     "resource_name/ammo_mech_explosive": {
       "key": "resource_name/ammo_mech_explosive",
-      "name": "Explosive <img=gui/hud/building_info_mech>",
+      "name": "Explosive",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_weapons_explosive_standard"
@@ -27487,7 +27487,7 @@
     },
     "resource_name/ammo_mech_high_caliber": {
       "key": "resource_name/ammo_mech_high_caliber",
-      "name": "High caliber <img=gui/hud/building_info_mech>",
+      "name": "High caliber",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_basic_weapons"
@@ -27499,7 +27499,7 @@
     },
     "resource_name/ammo_mech_low_caliber": {
       "key": "resource_name/ammo_mech_low_caliber",
-      "name": "Low caliber <img=gui/hud/building_info_mech>",
+      "name": "Low caliber",
       "type": "resource",
       "requires": [
         "gui/menu/research/name/mech_basic_weapons"
