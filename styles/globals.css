@@ -24,14 +24,16 @@ header {
 header h1 { margin: 0 0 8px; font-size: 18px; }
 header .controls { display: flex; gap: 12px; align-items: center; }
 
-input[type="search"], select, button {
+input[type="search"], select, button, a.button {
   background: #0d1117;
   color: var(--fg);
   border: 1px solid var(--border);
   padding: 6px 8px;
   border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
 }
-button { cursor: pointer; }
+button, a.button { cursor: pointer; }
 
 main { display: grid; grid-template-columns: 320px 1fr; height: calc(100% - 130px); }
 aside {
