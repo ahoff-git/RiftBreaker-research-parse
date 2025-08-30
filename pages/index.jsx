@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 import { useGraph } from '../lib/useGraph.mjs'
 import MiniMap from '../components/MiniMap.jsx'
+import Footer from '../components/Footer.jsx'
 
 const SHOW_TIP = false
 
@@ -188,13 +189,7 @@ export default function Home() {
           {detailsContent}
         </section>
       </main>
-      {SHOW_TIP && (
-        <footer>
-          <small>
-            Tip: Use analyze_research.ts to generate research_graph.json, and gui2lookup.ts to fill readable names.
-          </small>
-        </footer>
-      )}
+      <Footer tip={SHOW_TIP ? 'Tip: Use analyze_research.ts to generate research_graph.json, and gui2lookup.ts to fill readable names.' : null} />
     </>
   )
 }
