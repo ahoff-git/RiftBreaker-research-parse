@@ -1,11 +1,13 @@
 import Link from 'next/link'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { normalizeName, topoOrderForTarget, sumCosts, formatNumber } from '../lib/graphUtils.mjs'
 import { useGraph } from '../lib/useGraph.mjs'
 
 const SHOW_TIP = false
 
 export default function Home() {
+  const router = useRouter()
   const { graph, nodes } = useGraph()
   const [activeKey, setActiveKey] = useState(null)
   const [search, setSearch] = useState('')
@@ -32,13 +34,25 @@ export default function Home() {
     return items
   }, [nodes, category, search])
 
+  // Sync active key with URL (?key=... or ?node=...)
+  useEffect(() => {
+    const q = router.query || {}
+    const k = (typeof q.key === 'string' ? q.key : (typeof q.node === 'string' ? q.node : null))
+    if (k) setActiveKey(k)
+  }, [router.query])
+
   const detailNode = activeKey && graph ? graph.nodes[activeKey] : null
+
+  function setActiveAndUpdateUrl(key) {
+    setActiveKey(key)
+    router.push({ pathname: router.pathname, query: { ...router.query, key } }, undefined, { shallow: true })
+  }
 
   function nodeLink(key, overrideLabel) {
     const n = graph && graph.nodes && graph.nodes[key]
     const label = overrideLabel || (n && (n.name || normalizeName({ key })) || key.split('/').pop())
     return (
-      <a href="#" className="item" onClick={e => { e.preventDefault(); setActiveKey(key) }}>
+      <a href={`/?key=${encodeURIComponent(key)}`} className="item" onClick={e => { e.preventDefault(); setActiveAndUpdateUrl(key) }}>
         {label}
       </a>
     )
@@ -148,7 +162,7 @@ export default function Home() {
         <aside>
           <ul id="results">
             {filtered.map(n => (
-              <li key={n.key} className={n.key === activeKey ? 'active' : ''} onClick={() => setActiveKey(n.key)}>
+              <li key={n.key} className={n.key === activeKey ? 'active' : ''} onClick={() => setActiveAndUpdateUrl(n.key)}>
                 <div>{normalizeName(n)}</div>
               </li>
             ))}
